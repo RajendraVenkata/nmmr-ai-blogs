@@ -1,0 +1,10 @@
+I want you to build be a blogging website using NextJS it will be it should be running on aws amplify and it should only allow me to write the
+content and users should be able to login and comment and it should be role based content writes should be able to login and create blogs 
+primarity in MarkDown format. I should also be allowed to embed images videos etc. 
+
+users can register and request for content writer access to write content/content admin access. all the content should be stored in DynamoDB tables.
+and any deletion should not delete the content but simply mark it as deleted but nver delete. use cognito for user registration only system admin will 
+have access to give all kids of access and his access is controlled in a dynamodb table there can be multiple system admins
+
+Also add share methods to share is across LinkedIn, X and Facebook.
+
