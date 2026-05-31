@@ -38,3 +38,11 @@ assign roles at `/admin`. Content is never hard-deleted — deletes set `status=
 
 Connect the repo to AWS Amplify Hosting; Amplify builds the Next.js app and the
 `amplify/` backend together.
+
+## UI
+
+News/editorial theme: dark sticky nav (Menu dropdown + centered wordmark + search),
+two-column home page (lead article + Latest/Topics sidebar), category chips from the
+post's first tag, cover images (set per post in the editor; a colored placeholder is
+shown when absent), and article-grade markdown via the Tailwind typography plugin.
+The nav search icon filters the home feed client-side.
