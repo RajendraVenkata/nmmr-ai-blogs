@@ -2,13 +2,14 @@
 
 import { Authenticator } from '@aws-amplify/ui-react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 export default function AuthPage() {
   const router = useRouter();
+  const onReady = useCallback(() => router.push('/account'), [router]);
   return (
     <Authenticator signUpAttributes={['email']}>
-      {({ user }) => <Redirect ready={!!user} onReady={() => router.push('/account')} />}
+      {({ user }) => <Redirect ready={!!user} onReady={onReady} />}
     </Authenticator>
   );
 }

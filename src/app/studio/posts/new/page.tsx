@@ -22,7 +22,9 @@ function NewPostInner() {
 
   async function save(draft: PostDraft) {
     if (!user) return;
-    const { data: existing } = await client.models.Post.list({});
+    const { data: existing } = await client.models.Post.list({
+      filter: { status: { ne: 'DELETED' } },
+    });
     const slugs = (existing ?? []).map((p) => p.slug);
     const slug = uniqueSlug(draft.title, slugs);
     await client.models.Post.create({

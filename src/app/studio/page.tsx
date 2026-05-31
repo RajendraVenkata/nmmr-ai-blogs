@@ -29,7 +29,9 @@ function StudioInner() {
   const [posts, setPosts] = useState<PostRow[]>([]);
 
   async function load() {
-    const { data } = await client.models.Post.list({});
+    const { data } = await client.models.Post.list({
+      filter: { status: { ne: 'DELETED' } },
+    });
     let rows = notDeleted(data as PostRow[]);
     if (user && !canModerate(user.role)) {
       rows = rows.filter((p) => p.authorId === user.userId);

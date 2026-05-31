@@ -24,10 +24,12 @@ export default function PostEditor({
   const [draft, setDraft] = useState<PostDraft>(initial);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
 
   async function handleUpload(file: File) {
     setUploading(true);
     try {
+      setUploadError('');
       const key = `media/${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
       await uploadData({ path: key, data: file }).result;
       const { url } = await getUrl({ path: key });
@@ -36,6 +38,8 @@ export default function PostEditor({
         ? `\n<video src="${url.toString()}" controls width="100%"></video>\n`
         : `\n![${file.name}](${url.toString()})\n`;
       setDraft((d) => ({ ...d, bodyMarkdown: d.bodyMarkdown + snippet }));
+    } catch {
+      setUploadError('Upload failed. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -63,6 +67,7 @@ export default function PostEditor({
           onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0])}
         />
         {uploading && <span className="ml-2 text-gray-500">Uploading…</span>}
+        {uploadError && <span className="ml-2 text-red-600">{uploadError}</span>}
       </label>
       <div data-color-mode="light">
         <MDEditor

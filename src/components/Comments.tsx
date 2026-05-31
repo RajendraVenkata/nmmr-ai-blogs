@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { client } from '@/lib/client';
 import { useCurrentUser } from '@/lib/useCurrentUser';
 import { canModerate } from '@/lib/roles';
@@ -19,17 +19,17 @@ export default function Comments({ postId }: { postId: string }) {
   const [comments, setComments] = useState<CommentRow[]>([]);
   const [body, setBody] = useState('');
 
-  async function load() {
+  const load = useCallback(async () => {
     const { data } = await client.models.Comment.list({
       filter: { postId: { eq: postId } },
       authMode: 'apiKey',
     });
     setComments(notDeleted(data as CommentRow[]));
-  }
+  }, [postId]);
 
   useEffect(() => {
     load();
-  }, [postId]);
+  }, [load]);
 
   async function add() {
     if (!user || !body.trim()) return;

@@ -22,6 +22,7 @@ function EditPostInner() {
   const { user } = useCurrentUser();
   const [draft, setDraft] = useState<PostDraft | null>(null);
   const [denied, setDenied] = useState(false);
+  const [originalPublishedAt, setOriginalPublishedAt] = useState<string | null>(null);
 
   useEffect(() => {
     client.models.Post.get({ id: params.id }).then(({ data }) => {
@@ -36,6 +37,7 @@ function EditPostInner() {
         bodyMarkdown: data.bodyMarkdown,
         status: (data.status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT'),
       });
+      setOriginalPublishedAt(data.publishedAt ?? null);
     });
   }, [params.id, user?.userId]);
 
@@ -46,7 +48,7 @@ function EditPostInner() {
       excerpt: next.excerpt,
       bodyMarkdown: next.bodyMarkdown,
       status: next.status,
-      publishedAt: next.status === 'PUBLISHED' ? new Date().toISOString() : null,
+      publishedAt: next.status === 'PUBLISHED' ? (originalPublishedAt ?? new Date().toISOString()) : null,
     });
     router.push('/studio');
   }
