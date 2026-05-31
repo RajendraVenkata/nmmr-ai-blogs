@@ -70,7 +70,7 @@ export default function RegisterPage() {
   return (
     <AuthCard
       title="Create your account"
-      subtitle="Join MNMR AI Blogs"
+      subtitle="Join NMMR AI Blogs"
       footer={
         <>
           Already have an account?{' '}

@@ -31,7 +31,7 @@ export default function AuthCard({
     <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center">
       <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
         <Link href="/" className="mb-6 block text-center text-lg font-bold text-gray-900">
-          MNMR AI Blogs
+          NMMR AI Blogs
         </Link>
         <h1 className="text-center text-2xl font-bold text-gray-900">{title}</h1>
         {subtitle && <p className="mt-1 text-center text-sm text-gray-500">{subtitle}</p>}

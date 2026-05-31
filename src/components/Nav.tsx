@@ -11,7 +11,7 @@ export default function Nav() {
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-lg font-bold text-gray-900">MNMR AI Blogs</Link>
+          <Link href="/" className="text-lg font-bold text-gray-900">NMMR AI Blogs</Link>
           <Link href="/" className="hidden text-sm text-gray-600 hover:text-gray-900 sm:inline">Home</Link>
           {user && canAuthor(user.role) && (
             <Link href="/studio" className="hidden text-sm text-gray-600 hover:text-gray-900 sm:inline">Studio</Link>

@@ -73,7 +73,7 @@ export default function LoginPage() {
 
   return (
     <AuthCard
-      title="Sign in to MNMR AI Blogs"
+      title="Sign in to NMMR AI Blogs"
       subtitle="Enter your credentials to access your account"
       footer={
         <>

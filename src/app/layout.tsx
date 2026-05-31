@@ -5,7 +5,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'MNMR AI Blogs',
+  title: 'NMMR AI Blogs',
   description: 'Hands-on insights on AI and engineering',
 };
 
