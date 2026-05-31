@@ -1,24 +1,22 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import '@aws-amplify/ui-react/styles.css';
 import ConfigureAmplify from '@/components/ConfigureAmplify';
 import Nav from '@/components/Nav';
-import { SearchProvider } from '@/lib/SearchContext';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'MNNR AI Blogs',
-  description: 'Role-based blogging on AWS Amplify',
+  title: 'MNMR AI Blogs',
+  description: 'Hands-on insights on AI and engineering',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white text-gray-900 antialiased">
+      <body className="flex min-h-screen flex-col bg-white text-gray-900 antialiased">
         <ConfigureAmplify />
-        <SearchProvider>
-          <Nav />
-          <main className="mx-auto w-full max-w-6xl px-4 py-8">{children}</main>
-        </SearchProvider>
+        <Nav />
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
+        <Footer />
       </body>
     </html>
   );
