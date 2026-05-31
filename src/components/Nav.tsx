@@ -23,7 +23,7 @@ export default function Nav() {
         <div className="flex items-center gap-3 text-sm">
           {user ? (
             <>
-              <Link href="/account" className="text-gray-600 hover:text-gray-900">{user.email || 'Account'}</Link>
+              <Link href="/account" className="text-gray-600 hover:text-gray-900">{user.name}</Link>
               <button onClick={() => signOut()} className="text-gray-600 hover:text-gray-900">Sign out</button>
             </>
           ) : (
