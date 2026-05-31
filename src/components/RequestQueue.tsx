@@ -49,7 +49,7 @@ export default function RequestQueue() {
       } catch {
         // ignore — Cognito group change is the authoritative grant
       }
-      load();
+      await load();
     } finally {
       setBusy('');
     }
@@ -64,7 +64,7 @@ export default function RequestQueue() {
         decidedBy: user?.email ?? '',
         decidedAt: new Date().toISOString(),
       });
-      load();
+      await load();
     } finally {
       setBusy('');
     }

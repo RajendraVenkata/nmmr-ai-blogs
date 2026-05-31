@@ -35,7 +35,7 @@ export default function UserTable() {
       } catch {
         // ignore — Cognito group change is authoritative
       }
-      load();
+      await load();
     } finally {
       setBusy('');
     }
