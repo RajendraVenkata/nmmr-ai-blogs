@@ -12,6 +12,7 @@ export interface PostDraft {
   excerpt: string;
   bodyMarkdown: string;
   status: 'DRAFT' | 'PUBLISHED';
+  coverImageKey?: string | null;
 }
 
 export default function PostEditor({
@@ -24,6 +25,7 @@ export default function PostEditor({
   const [draft, setDraft] = useState<PostDraft>(initial);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [coverUploading, setCoverUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
 
   async function handleUpload(file: File) {
@@ -45,6 +47,20 @@ export default function PostEditor({
     }
   }
 
+  async function handleCoverUpload(file: File) {
+    setCoverUploading(true);
+    try {
+      setUploadError('');
+      const key = `media/cover-${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
+      await uploadData({ path: key, data: file }).result;
+      setDraft((d) => ({ ...d, coverImageKey: key }));
+    } catch {
+      setUploadError('Cover upload failed. Please try again.');
+    } finally {
+      setCoverUploading(false);
+    }
+  }
+
   return (
     <div className="space-y-3">
       <input
@@ -60,7 +76,17 @@ export default function PostEditor({
         onChange={(e) => setDraft({ ...draft, excerpt: e.target.value })}
       />
       <label className="block text-sm">
-        Upload image/video:{' '}
+        Cover image:{' '}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => e.target.files?.[0] && handleCoverUpload(e.target.files[0])}
+        />
+        {coverUploading && <span className="ml-2 text-gray-500">Uploading…</span>}
+        {draft.coverImageKey && <span className="ml-2 text-green-600">Cover set ✓</span>}
+      </label>
+      <label className="block text-sm">
+        Upload image/video into body:{' '}
         <input
           type="file"
           accept="image/*,video/*"
@@ -95,7 +121,7 @@ export default function PostEditor({
               setSaving(false);
             }
           }}
-          className="rounded bg-blue-600 px-4 py-2 text-white"
+          className="rounded bg-black px-4 py-2 text-white"
         >
           {saving ? 'Saving…' : 'Save'}
         </button>

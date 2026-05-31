@@ -21,8 +21,8 @@ function EditPostInner() {
   const router = useRouter();
   const { user } = useCurrentUser();
   const [draft, setDraft] = useState<PostDraft | null>(null);
-  const [denied, setDenied] = useState(false);
   const [originalPublishedAt, setOriginalPublishedAt] = useState<string | null>(null);
+  const [denied, setDenied] = useState(false);
 
   useEffect(() => {
     client.models.Post.get({ id: params.id }).then(({ data }) => {
@@ -31,13 +31,14 @@ function EditPostInner() {
         setDenied(true);
         return;
       }
+      setOriginalPublishedAt(data.publishedAt ?? null);
       setDraft({
         title: data.title,
         excerpt: data.excerpt ?? '',
         bodyMarkdown: data.bodyMarkdown,
-        status: (data.status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT'),
+        status: data.status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
+        coverImageKey: data.coverImageKey ?? null,
       });
-      setOriginalPublishedAt(data.publishedAt ?? null);
     });
   }, [params.id, user?.userId]);
 
@@ -48,7 +49,11 @@ function EditPostInner() {
       excerpt: next.excerpt,
       bodyMarkdown: next.bodyMarkdown,
       status: next.status,
-      publishedAt: next.status === 'PUBLISHED' ? (originalPublishedAt ?? new Date().toISOString()) : null,
+      coverImageKey: next.coverImageKey ?? null,
+      publishedAt:
+        next.status === 'PUBLISHED'
+          ? (originalPublishedAt ?? new Date().toISOString())
+          : null,
     });
     router.push('/studio');
   }

@@ -41,7 +41,7 @@ function NewPostInner() {
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">New post</h1>
       <PostEditor
-        initial={{ title: '', excerpt: '', bodyMarkdown: '', status: 'DRAFT' }}
+        initial={{ title: '', excerpt: '', bodyMarkdown: '', status: 'DRAFT', coverImageKey: null }}
         onSave={save}
       />
     </div>
