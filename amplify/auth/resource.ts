@@ -9,7 +9,7 @@ export const auth = defineAuth({
         clientId: secret('GOOGLE_CLIENT_ID'),
         clientSecret: secret('GOOGLE_CLIENT_SECRET'),
         scopes: ['openid', 'email', 'profile'],
-        attributeMapping: { email: 'email' },
+        attributeMapping: { email: 'email', fullname: 'name' },
       },
       callbackUrls: [
         'http://localhost:3000/',
