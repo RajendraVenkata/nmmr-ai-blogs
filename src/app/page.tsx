@@ -1,43 +1,49 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { client } from '@/lib/client';
 import { publishedOnly } from '@/lib/posts';
-
-interface PostRow {
-  id: string;
-  slug: string;
-  title: string;
-  excerpt?: string | null;
-  status?: string | null;
-  publishedAt?: string | null;
-}
+import { filterPosts } from '@/lib/format';
+import { useSearch } from '@/lib/SearchContext';
+import ArticleCard, { type ArticleCardPost } from '@/components/ArticleCard';
+import Sidebar from '@/components/Sidebar';
 
 export default function Home() {
-  const [posts, setPosts] = useState<PostRow[]>([]);
+  const [posts, setPosts] = useState<ArticleCardPost[]>([]);
+  const { query } = useSearch();
 
   useEffect(() => {
     client.models.Post.list({ authMode: 'apiKey' }).then(({ data }) => {
-      const visible = publishedOnly(data as PostRow[]).sort((a, b) =>
+      const visible = publishedOnly(data as ArticleCardPost[]).sort((a, b) =>
         (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''),
       );
       setPosts(visible);
     });
   }, []);
 
+  const filtered = filterPosts(posts, query);
+  const lead = filtered[0];
+  const rest = filtered.slice(1);
+
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Latest posts</h1>
-      {posts.map((p) => (
-        <article key={p.id} className="border-b pb-4">
-          <Link href={`/posts/${p.slug}`} className="text-xl font-semibold text-blue-700">
-            {p.title}
-          </Link>
-          {p.excerpt && <p className="text-gray-600">{p.excerpt}</p>}
-        </article>
-      ))}
-      {posts.length === 0 && <p className="text-gray-500">No posts published yet.</p>}
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
+      <div className="space-y-8 lg:col-span-2">
+        {lead ? (
+          <>
+            <ArticleCard post={lead} variant="lead" />
+            <div className="space-y-4">
+              {rest.map((p) => (
+                <ArticleCard key={p.id} post={p} variant="standard" />
+              ))}
+            </div>
+          </>
+        ) : (
+          <p className="text-gray-500">
+            {query ? 'No posts match your search.' : 'No posts published yet.'}
+          </p>
+        )}
+      </div>
+      <Sidebar posts={posts} />
     </div>
   );
 }
