@@ -11,8 +11,14 @@ export const auth = defineAuth({
         scopes: ['openid', 'email', 'profile'],
         attributeMapping: { email: 'email' },
       },
-      callbackUrls: ['http://localhost:3000/'],
-      logoutUrls: ['http://localhost:3000/'],
+      callbackUrls: [
+        'http://localhost:3000/',
+        'https://main.d343i0k2u8raax.amplifyapp.com/',
+      ],
+      logoutUrls: [
+        'http://localhost:3000/',
+        'https://main.d343i0k2u8raax.amplifyapp.com/',
+      ],
     },
   },
   groups: ['SystemAdmin', 'ContentAdmin', 'ContentWriter'],
