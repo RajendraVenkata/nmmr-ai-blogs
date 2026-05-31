@@ -28,7 +28,7 @@ export default function LoginPage() {
         await resendSignUpCode({ username: email }).catch(() => undefined);
         setNeedsConfirm(true);
       } else {
-        router.push('/account');
+        setError('Sign-in needs an additional step that is not supported here.');
       }
     } catch (err) {
       if ((err as { name?: string }).name === 'UserNotConfirmedException') {
