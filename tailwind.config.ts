@@ -11,6 +11,8 @@ const config: Config = {
       colors: {
         brand: "#e11d2a",
         link: "#2563eb",
+        primary: "#4f46e5",
+        primaryDark: "#4338ca",
       },
     },
   },
