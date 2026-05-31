@@ -52,6 +52,21 @@ const schema = a.schema({
       allow.groups(['ContentAdmin', 'SystemAdmin']).to(['read', 'update']),
     ]),
 
+  AccessRequest: a
+    .model({
+      userId: a.string().required(),
+      userEmail: a.string(),
+      requestedRole: a.enum(['CONTENT_WRITER', 'CONTENT_ADMIN']),
+      reason: a.string(),
+      status: a.enum(['PENDING', 'APPROVED', 'REJECTED']),
+      decidedBy: a.string(),
+      decidedAt: a.datetime(),
+    })
+    .authorization((allow) => [
+      allow.owner().to(['create', 'read']),
+      allow.groups(['SystemAdmin']).to(['read', 'update']),
+    ]),
+
   setUserRole: a
     .mutation()
     .arguments({ userId: a.string().required(), role: a.string().required() })
