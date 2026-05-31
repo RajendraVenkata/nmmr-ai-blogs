@@ -13,6 +13,7 @@ export interface PostDraft {
   bodyMarkdown: string;
   status: 'DRAFT' | 'PUBLISHED';
   coverImageKey?: string | null;
+  tags?: string[];
 }
 
 export default function PostEditor({
@@ -74,6 +75,20 @@ export default function PostEditor({
         placeholder="Excerpt"
         value={draft.excerpt}
         onChange={(e) => setDraft({ ...draft, excerpt: e.target.value })}
+      />
+      <input
+        className="w-full rounded border p-2"
+        placeholder="Tags (comma-separated, e.g. security, ai) — first tag is the category"
+        value={(draft.tags ?? []).join(', ')}
+        onChange={(e) =>
+          setDraft({
+            ...draft,
+            tags: e.target.value
+              .split(',')
+              .map((t) => t.trim())
+              .filter(Boolean),
+          })
+        }
       />
       <label className="block text-sm">
         Cover image:{' '}

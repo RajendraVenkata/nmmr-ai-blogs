@@ -38,6 +38,7 @@ function EditPostInner() {
         bodyMarkdown: data.bodyMarkdown,
         status: data.status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
         coverImageKey: data.coverImageKey ?? null,
+        tags: (data.tags ?? []).filter((t): t is string => !!t),
       });
     });
   }, [params.id, user?.userId]);
@@ -50,6 +51,7 @@ function EditPostInner() {
       bodyMarkdown: next.bodyMarkdown,
       status: next.status,
       coverImageKey: next.coverImageKey ?? null,
+      tags: next.tags ?? [],
       publishedAt:
         next.status === 'PUBLISHED'
           ? (originalPublishedAt ?? new Date().toISOString())
