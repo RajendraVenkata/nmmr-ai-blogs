@@ -25,7 +25,7 @@ export default function AccountPage() {
   if (!user) {
     return (
       <p className="py-8">
-        Please <Link href="/auth" className="text-blue-600 underline">sign in</Link>.
+        Please <Link href="/auth" className="text-primary underline">sign in</Link>.
       </p>
     );
   }

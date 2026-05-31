@@ -48,7 +48,7 @@ export default function ModerationList() {
           {posts.map((p) => (
             <li key={p.id} className="flex items-center justify-between py-2 text-sm">
               <span>{p.title ?? p.id}</span>
-              <button onClick={() => restorePost(p.id)} className="text-blue-600">
+              <button onClick={() => restorePost(p.id)} className="text-primary">
                 Restore (to draft)
               </button>
             </li>
@@ -62,7 +62,7 @@ export default function ModerationList() {
           {comments.map((c) => (
             <li key={c.id} className="flex items-center justify-between py-2 text-sm">
               <span className="truncate">{c.body ?? c.id}</span>
-              <button onClick={() => restoreComment(c.id)} className="ml-3 text-blue-600">
+              <button onClick={() => restoreComment(c.id)} className="ml-3 text-primary">
                 Restore
               </button>
             </li>

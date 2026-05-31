@@ -52,7 +52,7 @@ function StudioInner() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Studio</h1>
-        <Link href="/studio/posts/new" className="rounded bg-blue-600 px-3 py-2 text-sm text-white">
+        <Link href="/studio/posts/new" className="rounded bg-primary px-3 py-2 text-sm text-white">
           New post
         </Link>
       </div>
@@ -64,7 +64,7 @@ function StudioInner() {
             </span>
             <span className="flex gap-3 text-sm">
               {user && canEditPost(user.role, user.userId, p) && (
-                <Link href={`/studio/posts/${p.id}/edit`} className="text-blue-600">Edit</Link>
+                <Link href={`/studio/posts/${p.id}/edit`} className="text-primary">Edit</Link>
               )}
               {user && canEditPost(user.role, user.userId, p) && (
                 <button onClick={() => softDelete(p.id)} className="text-red-600">Delete</button>

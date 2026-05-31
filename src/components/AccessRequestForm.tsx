@@ -62,7 +62,7 @@ export default function AccessRequestForm({
         value={reason}
         onChange={(e) => setReason(e.target.value)}
       />
-      <button onClick={submit} className="rounded bg-blue-600 px-3 py-1 text-sm text-white">
+      <button onClick={submit} className="rounded bg-primary px-3 py-1 text-sm text-white">
         Submit request
       </button>
       {message && <p className="text-sm text-gray-600">{message}</p>}

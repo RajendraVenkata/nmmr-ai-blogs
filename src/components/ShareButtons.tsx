@@ -14,7 +14,7 @@ export default function ShareButtons({ url, title }: { url: string; title: strin
       <span className="text-gray-500">Share:</span>
       {links.map((l) => (
         <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-           className="text-blue-600 underline">
+           className="text-primary underline">
           {l.label}
         </a>
       ))}

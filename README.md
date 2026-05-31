@@ -46,3 +46,11 @@ two-column home page (lead article + Latest/Topics sidebar), category chips from
 post's first tag, cover images (set per post in the editor; a colored placeholder is
 shown when absent), and article-grade markdown via the Tailwind typography plugin.
 The nav search icon filters the home feed client-side.
+
+## UI (SaaS theme)
+
+Light enterprise-SaaS look (indigo primary): light top nav with Sign In / Get
+Started, a home hero + feature cards + 3-column post grid with client-side search,
+and custom `/login`, `/register`, and `/forgot` pages (the Amplify Authenticator was
+replaced). `/auth` redirects to `/login`. "Continue with Google" is a styled
+placeholder until a Cognito Google identity provider is configured.
