@@ -6,21 +6,42 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "sandbox": "npx ampx sandbox",
+    "sandbox:once": "npx ampx sandbox --once"
   },
   "dependencies": {
+    "@aws-amplify/adapter-nextjs": "^1.7.3",
+    "@aws-amplify/ui-react": "^6.15.4",
+    "@uiw/react-md-editor": "^4.1.1",
+    "aws-amplify": "^6.17.0",
+    "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.35"
+    "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
+    "@aws-amplify/backend": "^1.23.0",
+    "@aws-amplify/backend-cli": "^1.8.3",
+    "@aws-sdk/client-cognito-identity-provider": "^3.1057.0",
+    "@types/aws-lambda": "^8.10.161",
+    "@types/node": "^20.19.41",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "aws-cdk-lib": "^2.257.0",
+    "aws-lambda": "^1.0.7",
+    "constructs": "^10.6.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.35",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.35"
+    "tsx": "^4.22.3",
+    "typescript": "^5",
+    "vitest": "^4.1.7"
   }
 }
