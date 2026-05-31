@@ -1,14 +1,25 @@
 'use client';
 
 import { useState } from 'react';
+import { signInWithRedirect } from 'aws-amplify/auth';
 
 export default function GoogleButton() {
   const [msg, setMsg] = useState('');
+
+  async function handleClick() {
+    setMsg('');
+    try {
+      await signInWithRedirect({ provider: 'Google' });
+    } catch {
+      setMsg('Could not start Google sign-in. Please try again.');
+    }
+  }
+
   return (
     <div>
       <button
         type="button"
-        onClick={() => setMsg('Google sign-in is not configured yet.')}
+        onClick={handleClick}
         className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
       >
         <svg width="16" height="16" viewBox="0 0 48 48">
@@ -19,7 +30,7 @@ export default function GoogleButton() {
         </svg>
         Continue with Google
       </button>
-      {msg && <p className="mt-2 text-center text-xs text-gray-500">{msg}</p>}
+      {msg && <p className="mt-2 text-center text-xs text-red-600">{msg}</p>}
     </div>
   );
 }
