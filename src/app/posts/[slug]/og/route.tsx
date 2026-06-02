@@ -9,7 +9,8 @@ export async function GET(
   { params }: { params: { slug: string } },
 ) {
   const post = await getPublishedPostBySlug(params.slug);
-  const title = post?.title ?? 'NMMR AI Blogs';
+  if (!post) return new Response(null, { status: 404 });
+  const title = post.title;
 
   return new ImageResponse(
     (

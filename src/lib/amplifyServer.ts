@@ -11,7 +11,8 @@ export const { runWithAmplifyServerContext } = createServerRunner({
 export async function getSignedMediaUrl(key: string): Promise<string> {
   const { url } = await runWithAmplifyServerContext({
     nextServerContext: null,
-    operation: (contextSpec) => getUrl(contextSpec, { path: key }),
+    operation: (contextSpec) =>
+      getUrl(contextSpec, { path: key, options: { validateObjectExistence: true } }),
   });
   return url.toString();
 }

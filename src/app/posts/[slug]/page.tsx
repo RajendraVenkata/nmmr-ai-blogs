@@ -13,9 +13,14 @@ export async function generateMetadata({
   const post = await getPublishedPostBySlug(params.slug);
   if (!post) return { title: 'Post not found' };
 
-  const ogImageUrl = post.coverImageKey
-    ? await getSignedMediaUrl(post.coverImageKey)
-    : `/posts/${post.slug}/og`;
+  let ogImageUrl = `/posts/${post.slug}/og`;
+  if (post.coverImageKey) {
+    try {
+      ogImageUrl = await getSignedMediaUrl(post.coverImageKey);
+    } catch {
+      ogImageUrl = `/posts/${post.slug}/og`;
+    }
+  }
 
   return buildPostMetadata({ post, ogImageUrl });
 }

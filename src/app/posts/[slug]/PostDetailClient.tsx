@@ -13,7 +13,7 @@ export default function PostDetailClient({ post }: { post: PostRow }) {
   const url =
     typeof window !== 'undefined'
       ? window.location.href
-      : `https://rajendravenkata.com/posts/${post.slug}`;
+      : `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rajendravenkata.com'}/posts/${post.slug}`;
   const label = categoryLabel(post.tags ?? []);
 
   return (
