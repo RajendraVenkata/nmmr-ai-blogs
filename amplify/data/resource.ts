@@ -52,6 +52,17 @@ const schema = a.schema({
       allow.groups(['ContentAdmin', 'SystemAdmin']).to(['read', 'update']),
     ]),
 
+  Like: a
+    .model({
+      postId: a.id().required(),
+      userId: a.string().required(),
+    })
+    .authorization((allow) => [
+      allow.publicApiKey().to(['read']),
+      allow.authenticated().to(['read']),
+      allow.owner().to(['create', 'read', 'delete']),
+    ]),
+
   AccessRequest: a
     .model({
       userId: a.string().required(),
