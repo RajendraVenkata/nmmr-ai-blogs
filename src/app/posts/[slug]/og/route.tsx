@@ -2,7 +2,6 @@ import { ImageResponse } from 'next/og';
 import { getPublishedPostBySlug } from '@/lib/serverClient';
 
 export const runtime = 'nodejs';
-export const contentType = 'image/png';
 
 export async function GET(
   _req: Request,
