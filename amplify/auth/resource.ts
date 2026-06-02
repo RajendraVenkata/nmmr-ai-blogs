@@ -14,10 +14,14 @@ export const auth = defineAuth({
       callbackUrls: [
         'http://localhost:3000/',
         'https://main.d343i0k2u8raax.amplifyapp.com/',
+        'https://rajendravenkata.com/',
+        'https://www.rajendravenkata.com/',
       ],
       logoutUrls: [
         'http://localhost:3000/',
         'https://main.d343i0k2u8raax.amplifyapp.com/',
+        'https://rajendravenkata.com/',
+        'https://www.rajendravenkata.com/',
       ],
     },
   },
