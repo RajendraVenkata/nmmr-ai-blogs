@@ -5,6 +5,7 @@ import type { PostRow } from '@/lib/posts';
 import { SITE_URL } from '@/lib/site';
 import MarkdownView from '@/components/MarkdownView';
 import ShareButtons from '@/components/ShareButtons';
+import LikeButton from '@/components/LikeButton';
 import Comments from '@/components/Comments';
 import CategoryChip from '@/components/CategoryChip';
 import PostMeta from '@/components/PostMeta';
@@ -27,7 +28,10 @@ export default function PostDetailClient({ post }: { post: PostRow }) {
         label={label}
         className="aspect-[16/9] w-full rounded"
       />
-      <ShareButtons url={url} title={post.title} />
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <LikeButton postId={post.id} />
+        <ShareButtons url={url} title={post.title} />
+      </div>
       <MarkdownView markdown={post.bodyMarkdown} />
       <div className="pt-8">
         <Comments postId={post.id} />
