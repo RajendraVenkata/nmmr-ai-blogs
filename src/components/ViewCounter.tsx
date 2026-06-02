@@ -31,9 +31,20 @@ export default function ViewCounter({ postId }: { postId: string }) {
           return;
         }
 
-        // First view from this browser: increment once.
-        if (active) setCount(current + 1); // optimistic
+        // First view from this browser. Claim the guard synchronously BEFORE the
+        // write so a rapid re-mount (e.g. React StrictMode in dev) can't double-count.
         try {
+          window.localStorage.setItem(viewedKey(postId), '1');
+        } catch {
+          // no storage available; proceed without the guard
+        }
+
+        if (active) setCount(current + 1); // optimistic
+
+        try {
+          // NOTE: increment is non-atomic (absolute count write, no server-side ADD),
+          // so counts may drift/regress under heavy concurrency — acceptable for a
+          // soft view counter.
           if (row) {
             await client.models.PostView.update(
               { id: postId, count: current + 1 },
@@ -45,14 +56,13 @@ export default function ViewCounter({ postId }: { postId: string }) {
               { authMode: 'apiKey' },
             );
           }
-          try {
-            window.localStorage.setItem(viewedKey(postId), '1');
-          } catch {
-            // ignore storage failures
-          }
         } catch {
-          // increment failed (e.g. a create race with another first-viewer):
-          // fall back to showing the value we read.
+          // write failed: release the guard so a later visit retries, and revert display.
+          try {
+            window.localStorage.removeItem(viewedKey(postId));
+          } catch {
+            // ignore
+          }
           if (active) setCount(current);
         }
       } catch {
