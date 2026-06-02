@@ -6,6 +6,7 @@ import { SITE_URL } from '@/lib/site';
 import MarkdownView from '@/components/MarkdownView';
 import ShareButtons from '@/components/ShareButtons';
 import LikeButton from '@/components/LikeButton';
+import ViewCounter from '@/components/ViewCounter';
 import Comments from '@/components/Comments';
 import CategoryChip from '@/components/CategoryChip';
 import PostMeta from '@/components/PostMeta';
@@ -30,6 +31,7 @@ export default function PostDetailClient({ post }: { post: PostRow }) {
       />
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
         <LikeButton postId={post.id} />
+        <ViewCounter postId={post.id} />
         <ShareButtons url={url} title={post.title} />
       </div>
       <MarkdownView markdown={post.bodyMarkdown} />
