@@ -2,6 +2,7 @@
 
 import { categoryLabel } from '@/lib/format';
 import type { PostRow } from '@/lib/posts';
+import { SITE_URL } from '@/lib/site';
 import MarkdownView from '@/components/MarkdownView';
 import ShareButtons from '@/components/ShareButtons';
 import Comments from '@/components/Comments';
@@ -13,7 +14,7 @@ export default function PostDetailClient({ post }: { post: PostRow }) {
   const url =
     typeof window !== 'undefined'
       ? window.location.href
-      : `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rajendravenkata.com'}/posts/${post.slug}`;
+      : `${SITE_URL}/posts/${post.slug}`;
   const label = categoryLabel(post.tags ?? []);
 
   return (
