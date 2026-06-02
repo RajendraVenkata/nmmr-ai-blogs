@@ -63,6 +63,14 @@ const schema = a.schema({
       allow.owner().to(['create', 'read', 'delete']),
     ]),
 
+  PostView: a
+    .model({
+      count: a.integer().required(),
+    })
+    .authorization((allow) => [
+      allow.publicApiKey().to(['create', 'read', 'update']),
+    ]),
+
   AccessRequest: a
     .model({
       userId: a.string().required(),
