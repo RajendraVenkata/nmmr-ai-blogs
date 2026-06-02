@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getPublishedPostBySlug } from '@/lib/serverClient';
-import { getSignedMediaUrl } from '@/lib/amplifyServer';
 import { buildPostMetadata } from '@/lib/postMetadata';
 import PostDetailClient from './PostDetailClient';
 
@@ -13,14 +12,10 @@ export async function generateMetadata({
   const post = await getPublishedPostBySlug(params.slug);
   if (!post) return { title: 'Post not found' };
 
-  let ogImageUrl = `/posts/${post.slug}/og`;
-  if (post.coverImageKey) {
-    try {
-      ogImageUrl = await getSignedMediaUrl(post.coverImageKey);
-    } catch {
-      ogImageUrl = `/posts/${post.slug}/og`;
-    }
-  }
+  // Always serve the OG image through our own PNG endpoint. Social scrapers
+  // (LinkedIn/X/Facebook) reject SVG covers and choke on presigned S3 URLs
+  // (temporary token, 15-min expiry). The /og route rasterizes to a stable PNG.
+  const ogImageUrl = `/posts/${post.slug}/og`;
 
   return buildPostMetadata({ post, ogImageUrl });
 }
