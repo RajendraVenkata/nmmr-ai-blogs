@@ -11,19 +11,28 @@ export default function LikeButton({ postId }: { postId: string }) {
   const [liked, setLiked] = useState(false);
   const [busy, setBusy] = useState(false);
 
+  const userId = user?.userId;
+
   const load = useCallback(async () => {
     try {
-      const { data } = await client.models.Like.list({
-        filter: { postId: { eq: postId } },
-        authMode: 'apiKey',
-      });
-      const rows = data as LikeRow[];
+      const rows: LikeRow[] = [];
+      let token: string | undefined;
+      do {
+        const page = await client.models.Like.list({
+          filter: { postId: { eq: postId } },
+          authMode: 'apiKey',
+          limit: 1000,
+          nextToken: token,
+        });
+        rows.push(...(page.data as LikeRow[]));
+        token = page.nextToken ?? undefined;
+      } while (token);
       setCount(rows.length);
-      setLiked(user ? userHasLiked(rows, postId, user.userId) : false);
+      setLiked(userId ? userHasLiked(rows, postId, userId) : false);
     } catch {
       // keep current state if the read fails
     }
-  }, [postId, user]);
+  }, [postId, userId]);
 
   useEffect(() => {
     load();
