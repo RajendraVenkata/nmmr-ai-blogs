@@ -5,6 +5,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rajendravenkata.com'),
   title: 'NMMR AI Blogs',
   description: 'Hands-on insights on AI and engineering',
 };
