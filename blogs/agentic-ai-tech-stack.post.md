@@ -16,6 +16,8 @@ model actually runs** (inference hardware). Two vertical sidebars cut across all
 layers — **Observability / Monitoring / Evals** and **AI Safety / Security** — because
 both concerns apply at every level of the stack.
 
+![The Agentic AI Tech Stack — a layered map from applications down to inference hardware, with observability and security spanning every layer](/diagrams/agentic-ai-tech-stack.svg)
+
 ---
 
 ## How to read the stack

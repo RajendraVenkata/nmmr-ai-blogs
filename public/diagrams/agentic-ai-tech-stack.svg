@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1323" viewBox="0 0 1800 1323">
+<rect x="0.0" y="0.0" width="1800.0" height="1323.0" rx="0" ry="0" fill="#C6F125"/>
+<rect x="22.0" y="22.0" width="1756.0" height="1279.0" rx="24" ry="24" fill="#FFFFFF" stroke="#0B1020" stroke-width="4"/>
+<text x="900.0" y="82.0" font-size="46" fill="#0B1020" text-anchor="middle" font-weight="800" font-family="Arial, Helvetica, sans-serif" letter-spacing="1">AGENTIC AI TECH STACK</text>
+<rect x="48.0" y="124.0" width="1150.0" height="68.0" rx="14" ry="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.4"/>
+<rect x="541.8" y="108.0" width="162.4" height="32.0" rx="16" ry="16" fill="#2563EB"/>
+<text x="623.0" y="130.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">APPLICATIONS</text>
+<rect x="62.0" y="148.0" width="88.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="106.4" y="167.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">ChatGPT</text>
+<rect x="159.8" y="148.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="200.0" y="167.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Claude</text>
+<rect x="249.2" y="148.0" width="114.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="306.2" y="167.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Perplexity</text>
+<rect x="372.2" y="148.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="412.4" y="167.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Gemini</text>
+<rect x="461.6" y="148.0" width="114.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="518.6" y="167.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Higgsfield</text>
+<rect x="584.6" y="148.0" width="88.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="629.0" y="167.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Lovable</text>
+<rect x="48.0" y="205.0" width="1150.0" height="90.0" rx="14" ry="14" fill="#FFFFFF" stroke="#EA580C" stroke-width="2.4"/>
+<rect x="521.4" y="189.0" width="203.2" height="32.0" rx="16" ry="16" fill="#EA580C"/>
+<text x="623.0" y="211.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">AI AGENT HARNESS</text>
+<text x="62.0" y="241.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">PERSONAL AGENT</text>
+<rect x="62.0" y="251.0" width="130.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#EA580C" stroke-width="1.4"/>
+<text x="127.4" y="270.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Gemini Spark</text>
+<line x1="623.0" y1="219.0" x2="623.0" y2="281.0" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="632.0" y="241.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">CODING AGENT</text>
+<rect x="632.0" y="251.0" width="122.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#EA580C" stroke-width="1.4"/>
+<text x="693.2" y="270.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Claude Code</text>
+<rect x="763.4" y="251.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#EA580C" stroke-width="1.4"/>
+<text x="803.6" y="270.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Cursor</text>
+<rect x="48.0" y="308.0" width="1150.0" height="127.0" rx="14" ry="14" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2.4"/>
+<rect x="409.2" y="292.0" width="427.6" height="32.0" rx="16" ry="16" fill="#7C3AED"/>
+<text x="623.0" y="314.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">AGENTIC FRAMEWORKS  &amp;  RUNTIMES / SDKs</text>
+<text x="62.0" y="344.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">AGENTIC FRAMEWORKS</text>
+<rect x="62.0" y="354.0" width="105.6" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="114.8" y="373.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">LangGraph</text>
+<rect x="176.6" y="354.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="216.8" y="373.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">CrewAI</text>
+<rect x="266.0" y="354.0" width="139.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="335.6" y="373.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">AG2 (AutoGen)</text>
+<rect x="414.2" y="354.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="454.4" y="373.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Mastra</text>
+<rect x="503.6" y="354.0" width="97.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="552.2" y="373.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">CAMEL AI</text>
+<rect x="62.0" y="391.0" width="114.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="119.0" y="410.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">PydanticAI</text>
+<line x1="623.0" y1="322.0" x2="623.0" y2="421.0" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="632.0" y="344.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">RUNTIMES / SDKs</text>
+<rect x="632.0" y="354.0" width="164.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="714.2" y="373.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">OpenAI Agent SDK</text>
+<rect x="805.4" y="354.0" width="114.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="862.4" y="373.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Google ADK</text>
+<rect x="48.0" y="448.0" width="1150.0" height="164.0" rx="14" ry="14" fill="#FFFFFF" stroke="#0E7490" stroke-width="2.4"/>
+<rect x="465.3" y="432.0" width="315.4" height="32.0" rx="16" ry="16" fill="#0E7490"/>
+<text x="623.0" y="454.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">TOOLS / APIs  +  AUTOMATION</text>
+<text x="62.0" y="484.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">TOOLS &amp; APIs</text>
+<rect x="62.0" y="494.0" width="97.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="110.6" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Composio</text>
+<rect x="168.2" y="494.0" width="55.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="195.8" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Exa</text>
+<rect x="232.4" y="494.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="272.6" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Tavily</text>
+<rect x="321.8" y="494.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="362.0" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Arcade</text>
+<rect x="62.0" y="531.0" width="105.6" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="114.8" y="550.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Firecrawl</text>
+<rect x="176.6" y="531.0" width="114.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="233.6" y="550.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Perplexity</text>
+<rect x="299.6" y="531.0" width="122.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="360.8" y="550.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Browserbase</text>
+<rect x="62.0" y="568.0" width="72.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="98.0" y="587.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Manus</text>
+<line x1="433.0" y1="462.0" x2="433.0" y2="598.0" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="442.0" y="484.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">AUTOMATION</text>
+<rect x="442.0" y="494.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="482.2" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Zapier</text>
+<rect x="531.4" y="494.0" width="63.6" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="563.2" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Make</text>
+<rect x="604.0" y="494.0" width="55.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="631.6" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">n8n</text>
+<rect x="668.2" y="494.0" width="88.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="712.6" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Workato</text>
+<line x1="813.0" y1="462.0" x2="813.0" y2="598.0" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="822.0" y="484.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">SANDBOX</text>
+<rect x="822.0" y="494.0" width="55.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="849.6" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">E2B</text>
+<rect x="886.2" y="494.0" width="88.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="930.6" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Daytona</text>
+<rect x="984.0" y="494.0" width="72.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#0E7490" stroke-width="1.4"/>
+<text x="1020.0" y="513.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Modal</text>
+<rect x="48.0" y="625.0" width="1150.0" height="68.0" rx="14" ry="14" fill="#FFFFFF" stroke="#E11D48" stroke-width="2.4"/>
+<rect x="495.9" y="609.0" width="254.2" height="32.0" rx="16" ry="16" fill="#E11D48"/>
+<text x="623.0" y="631.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">STANDARDS / PROTOCOLS</text>
+<rect x="62.0" y="649.0" width="265.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.4"/>
+<text x="194.6" y="668.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Model Context Protocol (MCP)</text>
+<rect x="336.2" y="649.0" width="55.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.4"/>
+<text x="363.8" y="668.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">A2A</text>
+<rect x="400.4" y="649.0" width="181.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.4"/>
+<text x="491.0" y="668.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">OpenAPI Initiative</text>
+<rect x="590.6" y="649.0" width="139.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.4"/>
+<text x="660.2" y="668.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">OpenTelemetry</text>
+<rect x="738.8" y="649.0" width="72.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#E11D48" stroke-width="1.4"/>
+<text x="774.8" y="668.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">AG-UI</text>
+<rect x="48.0" y="706.0" width="1150.0" height="127.0" rx="14" ry="14" fill="#FFFFFF" stroke="#047857" stroke-width="2.4"/>
+<rect x="414.3" y="690.0" width="417.4" height="32.0" rx="16" ry="16" fill="#047857"/>
+<text x="623.0" y="712.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">KNOWLEDGE / DATA / CONTEXT  &amp;  MEMORY</text>
+<text x="62.0" y="742.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">BEGINNER-FRIENDLY DBs</text>
+<rect x="62.0" y="752.0" width="97.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="110.6" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">ChromaDB</text>
+<rect x="168.2" y="752.0" width="97.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="216.8" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Haystack</text>
+<rect x="274.4" y="752.0" width="114.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="331.4" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">LlamaIndex</text>
+<line x1="433.0" y1="720.0" x2="433.0" y2="819.0" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="442.0" y="742.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">PRODUCTION-GRADE DBs</text>
+<rect x="442.0" y="752.0" width="97.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="490.6" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Pinecone</text>
+<rect x="548.2" y="752.0" width="97.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="596.8" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Weaviate</text>
+<rect x="654.4" y="752.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="694.6" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Qdrant</text>
+<rect x="442.0" y="789.0" width="72.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="478.0" y="808.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Neo4j</text>
+<line x1="813.0" y1="720.0" x2="813.0" y2="819.0" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="822.0" y="742.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">MEMORY</text>
+<rect x="822.0" y="752.0" width="63.6" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="853.8" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">mem0</text>
+<rect x="894.6" y="752.0" width="55.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="922.2" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Zep</text>
+<rect x="958.8" y="752.0" width="72.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="994.8" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Letta</text>
+<rect x="1039.8" y="752.0" width="122.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="1101.0" y="771.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">supermemory</text>
+<rect x="822.0" y="789.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#047857" stroke-width="1.4"/>
+<text x="862.2" y="808.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">cognee</text>
+<rect x="48.0" y="846.0" width="1150.0" height="68.0" rx="14" ry="14" fill="#FFFFFF" stroke="#F97316" stroke-width="2.4"/>
+<rect x="567.3" y="830.0" width="111.4" height="32.0" rx="16" ry="16" fill="#F97316"/>
+<text x="623.0" y="852.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">ROUTING</text>
+<rect x="62.0" y="870.0" width="88.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.4"/>
+<text x="106.4" y="889.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">LiteLLM</text>
+<rect x="159.8" y="870.0" width="114.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.4"/>
+<text x="216.8" y="889.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">OpenRouter</text>
+<rect x="282.8" y="870.0" width="130.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#F97316" stroke-width="1.4"/>
+<text x="348.2" y="889.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Hugging Face</text>
+<rect x="48.0" y="927.0" width="1150.0" height="127.0" rx="14" ry="14" fill="#FFFFFF" stroke="#4F46E5" stroke-width="2.4"/>
+<rect x="526.5" y="911.0" width="193.0" height="32.0" rx="16" ry="16" fill="#4F46E5"/>
+<text x="623.0" y="933.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">MODEL PROVIDERS</text>
+<text x="62.0" y="963.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">CLOSED WEIGHTS</text>
+<rect x="62.0" y="973.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="102.2" y="992.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Gemini</text>
+<rect x="151.4" y="973.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="191.6" y="992.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">OpenAI</text>
+<rect x="240.8" y="973.0" width="105.6" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="293.6" y="992.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Anthropic</text>
+<rect x="355.4" y="973.0" width="88.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="399.8" y="992.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Mistral</text>
+<line x1="623.0" y1="941.0" x2="623.0" y2="1040.0" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="632.0" y="963.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">OPEN WEIGHTS</text>
+<rect x="632.0" y="973.0" width="130.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="697.4" y="992.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Llama (Meta)</text>
+<rect x="771.8" y="973.0" width="88.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="816.2" y="992.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Mistral</text>
+<rect x="869.6" y="973.0" width="139.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="939.2" y="992.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">OpenAI (open)</text>
+<rect x="1017.8" y="973.0" width="72.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="1053.8" y="992.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Gemma</text>
+<rect x="632.0" y="1010.0" width="97.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="680.6" y="1029.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">DeepSeek</text>
+<rect x="738.2" y="1010.0" width="63.6" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="770.0" y="1029.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Qwen</text>
+<rect x="810.8" y="1010.0" width="63.6" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#4F46E5" stroke-width="1.4"/>
+<text x="842.6" y="1029.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Kimi</text>
+<rect x="48.0" y="1067.0" width="1150.0" height="68.0" rx="14" ry="14" fill="#FFFFFF" stroke="#FB7185" stroke-width="2.4"/>
+<rect x="531.6" y="1051.0" width="182.8" height="32.0" rx="16" ry="16" fill="#FB7185"/>
+<text x="623.0" y="1073.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">SERVING ENGINE</text>
+<rect x="62.0" y="1091.0" width="63.6" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#FB7185" stroke-width="1.4"/>
+<text x="93.8" y="1110.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">vLLM</text>
+<rect x="134.6" y="1091.0" width="130.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#FB7185" stroke-width="1.4"/>
+<text x="200.0" y="1110.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">TensorRT-LLM</text>
+<rect x="274.4" y="1091.0" width="55.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#FB7185" stroke-width="1.4"/>
+<text x="302.0" y="1110.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">TGI</text>
+<rect x="338.6" y="1091.0" width="80.4" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#FB7185" stroke-width="1.4"/>
+<text x="378.8" y="1110.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">SGLang</text>
+<rect x="48.0" y="1148.0" width="1150.0" height="127.0" rx="14" ry="14" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="2.4"/>
+<rect x="511.2" y="1132.0" width="223.6" height="32.0" rx="16" ry="16" fill="#1D4ED8"/>
+<text x="623.0" y="1154.0" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.5">INFERENCE HARDWARE</text>
+<text x="62.0" y="1184.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">ASIC INFERENCING</text>
+<rect x="62.0" y="1194.0" width="63.6" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.4"/>
+<text x="93.8" y="1213.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Groq</text>
+<rect x="134.6" y="1194.0" width="97.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.4"/>
+<text x="183.2" y="1213.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Cerebras</text>
+<rect x="240.8" y="1194.0" width="114.0" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.4"/>
+<text x="297.8" y="1213.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Google TPU</text>
+<rect x="62.0" y="1231.0" width="130.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.4"/>
+<text x="127.4" y="1250.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">AWS Trainium</text>
+<line x1="433.0" y1="1162.0" x2="433.0" y2="1261.0" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="442.0" y="1184.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">STANDALONE GPU</text>
+<rect x="442.0" y="1194.0" width="130.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.4"/>
+<text x="507.4" y="1213.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Fireworks AI</text>
+<rect x="581.8" y="1194.0" width="88.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.4"/>
+<text x="626.2" y="1213.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Baseten</text>
+<line x1="813.0" y1="1162.0" x2="813.0" y2="1261.0" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="822.0" y="1184.0" font-size="12" fill="#64748B" text-anchor="start" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.4">CLOUD INFERENCING</text>
+<rect x="822.0" y="1194.0" width="214.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.4"/>
+<text x="929.4" y="1213.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Nebius / Token Factory</text>
+<rect x="1045.8" y="1194.0" width="130.8" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.4"/>
+<text x="1111.2" y="1213.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Google Cloud</text>
+<rect x="822.0" y="1231.0" width="55.2" height="28.0" rx="8" ry="8" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.4"/>
+<text x="849.6" y="1250.0" font-size="14" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">AWS</text>
+<rect x="1226.0" y="124.0" width="250.0" height="1151.0" rx="16" ry="16" fill="#FFFFFF" stroke="#15803D" stroke-width="2.4"/>
+<rect x="1238.0" y="109.0" width="226.0" height="48.0" rx="12" ry="12" fill="#15803D"/>
+<text x="1351.0" y="128.0" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.3">OBSERVABILITY</text>
+<text x="1351.0" y="146.0" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.3">MONITORING / EVALS</text>
+<rect x="1240.0" y="242.9" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#15803D" stroke-width="1.4"/>
+<text x="1351.0" y="274.9" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">LangSmith</text>
+<rect x="1240.0" y="422.8" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#15803D" stroke-width="1.4"/>
+<text x="1351.0" y="454.8" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Braintrust</text>
+<rect x="1240.0" y="602.6" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#15803D" stroke-width="1.4"/>
+<text x="1351.0" y="634.6" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Arize</text>
+<rect x="1240.0" y="782.4" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#15803D" stroke-width="1.4"/>
+<text x="1351.0" y="814.4" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Langfuse</text>
+<rect x="1240.0" y="962.2" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#15803D" stroke-width="1.4"/>
+<text x="1351.0" y="994.2" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Fiddler</text>
+<rect x="1240.0" y="1142.1" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#15803D" stroke-width="1.4"/>
+<text x="1351.0" y="1174.1" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Helicone</text>
+<rect x="1492.0" y="124.0" width="250.0" height="1151.0" rx="16" ry="16" fill="#FFFFFF" stroke="#B91C1C" stroke-width="2.4"/>
+<rect x="1504.0" y="109.0" width="226.0" height="48.0" rx="12" ry="12" fill="#B91C1C"/>
+<text x="1617.0" y="128.0" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.3">AI SAFETY</text>
+<text x="1617.0" y="146.0" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="0.3">SECURITY</text>
+<rect x="1506.0" y="242.9" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#B91C1C" stroke-width="1.4"/>
+<text x="1617.0" y="274.9" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Okta</text>
+<rect x="1506.0" y="422.8" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#B91C1C" stroke-width="1.4"/>
+<text x="1617.0" y="454.8" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Robust Intelligence</text>
+<rect x="1506.0" y="602.6" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#B91C1C" stroke-width="1.4"/>
+<text x="1617.0" y="634.6" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">watsonx.governance</text>
+<rect x="1506.0" y="782.4" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#B91C1C" stroke-width="1.4"/>
+<text x="1617.0" y="814.4" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Portkey</text>
+<rect x="1506.0" y="962.2" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#B91C1C" stroke-width="1.4"/>
+<text x="1617.0" y="994.2" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">Lakera</text>
+<rect x="1506.0" y="1142.1" width="222.0" height="54.0" rx="10" ry="10" fill="#F8FAFC" stroke="#B91C1C" stroke-width="1.4"/>
+<text x="1617.0" y="1174.1" font-size="15" fill="#0F172A" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">promptfoo</text>
+<text x="900.0" y="1309.0" font-size="16" fill="#0B1020" text-anchor="middle" font-weight="600" font-family="Arial, Helvetica, sans-serif">NMMR AI Blogs  ·  rajendravenkata.com</text>
+</svg>

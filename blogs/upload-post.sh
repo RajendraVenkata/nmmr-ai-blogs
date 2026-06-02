@@ -40,7 +40,9 @@ DISCOVER=0
 DRY_RUN=0
 ASSUME_YES="${FORCE:-0}"; [[ "$ASSUME_YES" == "1" ]] && ASSUME_YES=1 || ASSUME_YES=0
 
-usage() { sed -n '2,40p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
+# Print the leading comment header (lines after the shebang, up to the first
+# non-comment line) as help text.
+usage() { awk 'NR>1 && /^#/ {sub(/^# ?/,""); print; next} NR>1 {exit}' "$0"; exit "${1:-0}"; }
 
 # ---- arg parsing ----
 while [[ $# -gt 0 ]]; do
@@ -93,7 +95,7 @@ if [[ "$DISCOVER" -eq 1 ]]; then
 fi
 
 # ---- parse frontmatter + body, build the DynamoDB item JSON ----
-ITEM_JSON="$(mktemp -t post-item-XXXXXX.json)"
+ITEM_JSON="$(mktemp "${TMPDIR:-/tmp}/post-item.XXXXXX")"
 trap 'rm -f "$ITEM_JSON"' EXIT
 
 eval "$(POST_ID="$POST_ID" AUTHOR_NAME="$AUTHOR_NAME" AUTHOR_ID="$AUTHOR_ID" \
@@ -188,8 +190,9 @@ echo "  Live URL:   $SITE_URL/posts/$SLUG"
 echo
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
-  echo "[dry-run] item JSON written to: $ITEM_JSON"
-  cp "$ITEM_JSON" "${ITEM_JSON}.keep" && echo "[dry-run] copy kept at: ${ITEM_JSON}.keep"
+  KEEP="$MD_DIR/$SLUG.ddb-item.json"
+  cp "$ITEM_JSON" "$KEEP"
+  echo "[dry-run] DynamoDB item written to: $KEEP"
   echo "[dry-run] no AWS calls made."
   exit 0
 fi
