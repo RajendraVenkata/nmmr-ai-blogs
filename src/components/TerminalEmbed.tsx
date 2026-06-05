@@ -26,20 +26,16 @@ export default function TerminalEmbed({ labId }: { labId: LabId }) {
   async function launch() {
     if (!mountRef.current) return;
     setStatus('connecting');
-    setMessage('Requesting access…');
+    setMessage('Connecting…');
     try {
-      const res = await fetch('/api/terminal-token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ labId }),
-      });
-      if (!res.ok) {
-        const { error } = await res.json().catch(() => ({ error: 'Failed' }));
+      const { fetchAuthSession } = await import('aws-amplify/auth');
+      const session = await fetchAuthSession();
+      const token = session.tokens?.idToken?.toString();
+      if (!token) {
         setStatus('error');
-        setMessage(error ?? `Request failed (${res.status})`);
+        setMessage('Please sign in to launch a terminal.');
         return;
       }
-      const { token } = await res.json();
 
       const { Terminal } = await import('@xterm/xterm');
       const { FitAddon } = await import('@xterm/addon-fit');
