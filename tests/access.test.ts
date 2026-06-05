@@ -106,4 +106,9 @@ describe('requestOptions', () => {
   it('offers nothing to a content admin who is already a coder', () => {
     expect(requestOptions('CONTENT_ADMIN', true)).toEqual([]);
   });
+  it('offers Coder to a non-coder system admin', () => {
+    expect(requestOptions('SYSTEM_ADMIN', false)).toEqual([
+      { value: 'CODER', label: 'Coder access' },
+    ]);
+  });
 });
