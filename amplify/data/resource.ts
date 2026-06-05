@@ -77,7 +77,7 @@ const schema = a.schema({
     .model({
       userId: a.string().required(),
       userEmail: a.string(),
-      requestedRole: a.enum(['CONTENT_WRITER', 'CONTENT_ADMIN']),
+      requestedRole: a.enum(['CONTENT_WRITER', 'CONTENT_ADMIN', 'CODER']),
       reason: a.string(),
       status: a.enum(['PENDING', 'APPROVED', 'REJECTED']),
       decidedBy: a.string(),
