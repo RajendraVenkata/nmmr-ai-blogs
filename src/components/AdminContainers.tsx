@@ -23,7 +23,7 @@ export default function AdminContainers() {
     try {
       const [res, profiles] = await Promise.all([
         fetch('/api/admin/containers'),
-        client.models.UserProfile.list({}),
+        client.models.UserProfile.list({}).catch(() => ({ data: [] })),
       ]);
       if (!res.ok) {
         setMessage("Couldn't reach the lab service.");
