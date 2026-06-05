@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { client } from '@/lib/client';
 import { useCurrentUser } from '@/lib/useCurrentUser';
-import { pendingRequests } from '@/lib/access';
+import { pendingRequests, isCoderRequest, requestLabel } from '@/lib/access';
 
 interface RequestRow {
   id: string;
@@ -34,20 +34,35 @@ export default function RequestQueue() {
     if (!r.requestedRole) return;
     setBusy(r.id);
     try {
-      await client.mutations.setUserRole({ userId: r.userId, role: r.requestedRole });
-      await client.models.AccessRequest.update({
-        id: r.id,
-        status: 'APPROVED',
-        decidedBy: user?.email ?? '',
-        decidedAt: new Date().toISOString(),
-      });
-      try {
-        await client.models.UserProfile.update({
-          id: r.userId,
-          role: r.requestedRole as 'CONTENT_WRITER' | 'CONTENT_ADMIN',
+      if (isCoderRequest(r.requestedRole)) {
+        await client.mutations.setCoderAccess({ userId: r.userId, enabled: true });
+        await client.models.AccessRequest.update({
+          id: r.id,
+          status: 'APPROVED',
+          decidedBy: user?.email ?? '',
+          decidedAt: new Date().toISOString(),
         });
-      } catch {
-        // ignore — Cognito group change is the authoritative grant
+        try {
+          await client.models.UserProfile.update({ id: r.userId, isCoder: true });
+        } catch {
+          // ignore — Cognito group change is the authoritative grant
+        }
+      } else {
+        await client.mutations.setUserRole({ userId: r.userId, role: r.requestedRole });
+        await client.models.AccessRequest.update({
+          id: r.id,
+          status: 'APPROVED',
+          decidedBy: user?.email ?? '',
+          decidedAt: new Date().toISOString(),
+        });
+        try {
+          await client.models.UserProfile.update({
+            id: r.userId,
+            role: r.requestedRole as 'CONTENT_WRITER' | 'CONTENT_ADMIN',
+          });
+        } catch {
+          // ignore — Cognito group change is the authoritative grant
+        }
       }
       await load();
     } finally {
@@ -75,7 +90,7 @@ export default function RequestQueue() {
       {rows.map((r) => (
         <li key={r.id} className="py-3 text-sm">
           <div className="font-medium">{r.userEmail ?? r.userId}</div>
-          <div className="text-gray-600">Wants: {r.requestedRole}</div>
+          <div className="text-gray-600">Wants: {requestLabel(r.requestedRole ?? '')}</div>
           {r.reason && <div className="text-gray-500">Reason: {r.reason}</div>}
           <div className="mt-1 flex gap-3">
             <button
