@@ -69,3 +69,9 @@ SystemAdmins grant Coder access at `/admin/users`. The browser fetches a 5-minut
 token from `/api/terminal-token` (signed with `TERMINAL_JWT_SECRET`, which must equal
 the relay's `JWT_SECRET`) and connects to `NEXT_PUBLIC_TERMINAL_WS_URL`. Containers
 run with networking disabled, so package installs are not available yet.
+
+Coders can view and stop their running container at `/account` ("My containers").
+The browser calls the blog's `/api/containers` and `/api/containers/stop` routes, which
+verify the Cognito session + `Coder` group, mint a token, and proxy server-to-server to
+the relay's `GET /api/containers` / `POST /api/containers/stop` over `TERMINAL_HTTP_URL`
+(e.g. `https://terminal.nmmr.tech`; `http://localhost:8080` locally).
