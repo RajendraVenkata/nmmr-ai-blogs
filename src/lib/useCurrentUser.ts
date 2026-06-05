@@ -13,6 +13,7 @@ export interface CurrentUser {
   email: string;
   name: string;
   role: Role;
+  groups: string[];
 }
 
 async function ensureProfile(u: CurrentUser) {
@@ -57,6 +58,7 @@ export function useCurrentUser() {
           email,
         }),
         role: roleFromGroups(groups),
+        groups,
       };
       setUser(next);
       void ensureProfile(next);
