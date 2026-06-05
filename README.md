@@ -54,3 +54,18 @@ Started, a home hero + feature cards + 3-column post grid with client-side searc
 and custom `/login`, `/register`, and `/forgot` pages (the Amplify Authenticator was
 replaced). `/auth` redirects to `/login`. "Continue with Google" is a styled
 placeholder until a Cognito Google identity provider is configured.
+
+## Coder terminals
+
+Posts can embed a live Docker shell with a fenced block:
+
+    ```terminal
+    lab: python-basics
+    ```
+
+Valid labs: `python-basics`, `node-basics`, `linux-basics`. Only users in the
+`Coder` Cognito group see a live terminal (others see a request-access prompt);
+SystemAdmins grant Coder access at `/admin/users`. The browser fetches a 5-minute
+token from `/api/terminal-token` (signed with `TERMINAL_JWT_SECRET`, which must equal
+the relay's `JWT_SECRET`) and connects to `NEXT_PUBLIC_TERMINAL_WS_URL`. Containers
+run with networking disabled, so package installs are not available yet.
