@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { categoryLabel, formatDate, collectTopics, filterPosts } from '@/lib/format';
+import { categoryLabel, formatDate, collectTopics, filterPosts, relativeTimeFromSeconds } from '@/lib/format';
 
 describe('categoryLabel', () => {
   it('uppercases the first non-empty tag', () => {
@@ -46,5 +46,21 @@ describe('filterPosts', () => {
     expect(filterPosts(posts, 'AI').map((p) => p.title)).toEqual(['AI safety']);
     expect(filterPosts(posts, 'food').map((p) => p.title)).toEqual(['Cooking']);
     expect(filterPosts(posts, 'life').map((p) => p.title)).toEqual(['Cooking']);
+  });
+});
+
+describe('relativeTimeFromSeconds', () => {
+  const now = 1_000_000_000_000; // fixed nowMs
+  const secAgo = (s: number) => now / 1000 - s;
+  it('shows "just now" under a minute', () => {
+    expect(relativeTimeFromSeconds(secAgo(30), now)).toBe('just now');
+  });
+  it('shows minutes (singular and plural)', () => {
+    expect(relativeTimeFromSeconds(secAgo(60), now)).toBe('1 min ago');
+    expect(relativeTimeFromSeconds(secAgo(5 * 60), now)).toBe('5 mins ago');
+  });
+  it('shows hours and days', () => {
+    expect(relativeTimeFromSeconds(secAgo(3 * 3600), now)).toBe('3 hours ago');
+    expect(relativeTimeFromSeconds(secAgo(2 * 86400), now)).toBe('2 days ago');
   });
 });
