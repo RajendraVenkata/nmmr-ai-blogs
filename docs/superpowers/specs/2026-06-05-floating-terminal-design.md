@@ -54,7 +54,7 @@ Extract the connection logic into a hook so the inline and floating components s
 - `launch(): Promise<void>` (the current `TerminalEmbed.launch` body — fetch the
   session idToken, dynamic-import xterm + fit addon, open the WebSocket, wire
   control/data frames and status),
-- `fit(): void` (re-fit the terminal to its container; used on restore).
+- `refit(): void` (re-fit the terminal to its container; used on restore).
 
 The hook owns the cleanup effect (close the WebSocket, `dispose()` the terminal on
 unmount) and keeps `termRef` / `fitRef` / `wsRef` internally.
