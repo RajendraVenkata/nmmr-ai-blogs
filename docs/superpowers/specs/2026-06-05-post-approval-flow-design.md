@@ -21,6 +21,14 @@ the post stays hidden, and an admin flips it to `PUBLISHED`. Someone with the Dy
 credentials could still write `PUBLISHED` directly. That is acceptable for an editorial
 review.
 
+**Second caveat (AppSync layer):** `Post.update` is granted to the
+`ContentWriter`/`ContentAdmin`/`SystemAdmin` group with no field-level restriction, so a
+`ContentWriter` could approve their own post by calling `Post.update({ status: 'PUBLISHED' })`
+through the API directly — the `/admin/posts` `canModerate` gate is **client-side only**. Like
+the CLI caveat, this is a known limitation: the gate is a workflow convention, not a hard
+control. Hard-gating it (a field-level rule or custom resolver restricting `status` changes to
+`ContentAdmin`/`SystemAdmin`) is the larger authorization change deferred below.
+
 The pieces this builds on:
 - `Post.status` enum is `['DRAFT', 'PUBLISHED', 'DELETED']` (`amplify/data/resource.ts`).
 - Public reads filter to `PUBLISHED` via `publishedOnly` (`src/lib/posts.ts`), used by the
