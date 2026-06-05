@@ -1,5 +1,7 @@
 'use client';
 
+import { requestLabel } from '@/lib/access';
+
 export interface RequestRow {
   id: string;
   requestedRole?: string | null;
@@ -15,7 +17,7 @@ export default function MyRequests({ requests }: { requests: RequestRow[] }) {
       <ul className="divide-y rounded border">
         {requests.map((r) => (
           <li key={r.id} className="flex items-center justify-between px-3 py-2 text-sm">
-            <span>{r.requestedRole}</span>
+            <span>{requestLabel(r.requestedRole ?? '')}</span>
             <span className="text-gray-500">{r.status}</span>
           </li>
         ))}
