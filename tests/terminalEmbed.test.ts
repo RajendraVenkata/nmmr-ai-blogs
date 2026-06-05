@@ -21,3 +21,17 @@ describe('parseTerminalFence', () => {
     expect(TERMINAL_LABS['linux-basics']).toBe('Linux');
   });
 });
+
+describe('networked labs', () => {
+  it('parses a networked lab fence', () => {
+    expect(parseTerminalFence('terminal', 'lab: python-net')).toEqual({ labId: 'python-net' });
+  });
+  it('labels networked labs', () => {
+    expect(TERMINAL_LABS['python-net']).toBe('Python (networked)');
+    expect(TERMINAL_LABS['node-net']).toBe('Node.js (networked)');
+    expect(TERMINAL_LABS['linux-net']).toBe('Linux (networked)');
+  });
+  it('still parses the offline labs', () => {
+    expect(parseTerminalFence('terminal', 'lab: python-basics')).toEqual({ labId: 'python-basics' });
+  });
+});

@@ -3,6 +3,9 @@ export const TERMINAL_LABS = {
   'python-basics': 'Python',
   'node-basics': 'Node.js',
   'linux-basics': 'Linux',
+  'python-net': 'Python (networked)',
+  'node-net': 'Node.js (networked)',
+  'linux-net': 'Linux (networked)',
 } as const;
 
 export type LabId = keyof typeof TERMINAL_LABS;
