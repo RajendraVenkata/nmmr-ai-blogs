@@ -13,7 +13,7 @@ export default function FloatingTerminal({ labId }: { labId: LabId }) {
 
   function restore() {
     setMinimized(false);
-    requestAnimationFrame(() => refit());
+    requestAnimationFrame(() => requestAnimationFrame(() => refit()));
   }
 
   return (
@@ -39,6 +39,11 @@ export default function FloatingTerminal({ labId }: { labId: LabId }) {
               <button onClick={launch} className="rounded bg-indigo-600 px-2 py-1 text-xs text-white">Launch</button>
             )}
             {status === 'connecting' && <span className="text-xs text-gray-400">{message || 'Connecting…'}</span>}
+            {status === 'connected' && (
+              <span className="flex items-center gap-1 text-xs text-green-400">
+                <span className="h-2 w-2 rounded-full bg-green-400" /> live
+              </span>
+            )}
             {isCoder && status === 'error' && (
               <button onClick={launch} className="rounded bg-red-600 px-2 py-1 text-xs text-white">Retry</button>
             )}

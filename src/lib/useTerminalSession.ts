@@ -17,6 +17,7 @@ export function useTerminalSession(labId: LabId) {
   const wsRef = useRef<WebSocket | null>(null);
   const termRef = useRef<{ dispose: () => void } | null>(null);
   const fitRef = useRef<{ fit: () => void } | null>(null);
+  const launchingRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -26,7 +27,8 @@ export function useTerminalSession(labId: LabId) {
   }, []);
 
   async function launch() {
-    if (!mountRef.current) return;
+    if (!mountRef.current || launchingRef.current) return;
+    launchingRef.current = true;
     setStatus('connecting');
     setMessage('Connecting…');
     try {
@@ -54,6 +56,7 @@ export function useTerminalSession(labId: LabId) {
       const ws = new WebSocket(`${base}?token=${encodeURIComponent(token)}&labId=${encodeURIComponent(labId)}`);
       ws.binaryType = 'arraybuffer';
       wsRef.current = ws;
+      launchingRef.current = false;
 
       ws.onmessage = (ev) => {
         if (typeof ev.data === 'string') {
@@ -77,6 +80,7 @@ export function useTerminalSession(labId: LabId) {
       term.onData((d) => { if (ws.readyState === WebSocket.OPEN) ws.send(d); });
       ws.onopen = () => { ws.send(JSON.stringify({ type: 'resize', cols: term.cols, rows: term.rows })); };
     } catch (e) {
+      launchingRef.current = false;
       setStatus('error');
       setMessage(e instanceof Error ? e.message : 'Failed to launch');
     }
