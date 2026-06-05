@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { setUserRole } from '../functions/set-user-role/resource';
+import { setCoderAccess } from '../functions/set-coder-access/resource';
 
 const schema = a.schema({
   UserProfile: a
@@ -8,6 +9,7 @@ const schema = a.schema({
       displayName: a.string(),
       role: a.enum(['READER', 'CONTENT_WRITER', 'CONTENT_ADMIN', 'SYSTEM_ADMIN']),
       status: a.enum(['ACTIVE', 'DELETED']),
+      isCoder: a.boolean(),
     })
     .authorization((allow) => [
       allow.owner().to(['read', 'create', 'update']),
@@ -92,6 +94,13 @@ const schema = a.schema({
     .returns(a.json())
     .authorization((allow) => [allow.groups(['SystemAdmin'])])
     .handler(a.handler.function(setUserRole)),
+
+  setCoderAccess: a
+    .mutation()
+    .arguments({ userId: a.string().required(), enabled: a.boolean().required() })
+    .returns(a.json())
+    .authorization((allow) => [allow.groups(['SystemAdmin'])])
+    .handler(a.handler.function(setCoderAccess)),
 });
 
 export type Schema = ClientSchema<typeof schema>;

@@ -25,7 +25,7 @@ export const auth = defineAuth({
       ],
     },
   },
-  groups: ['SystemAdmin', 'ContentAdmin', 'ContentWriter'],
+  groups: ['SystemAdmin', 'ContentAdmin', 'ContentWriter', 'Coder'],
   triggers: { postConfirmation },
   access: (allow) => [
     allow.resource(postConfirmation).to(['addUserToGroup']),
