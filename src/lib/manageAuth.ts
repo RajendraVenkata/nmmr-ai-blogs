@@ -1,23 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
 import { runWithAmplifyServerContext } from '@/lib/amplifyServer';
-import { authorizeManageRequest, type TerminalAuthResult } from '@/lib/terminalToken';
+import { canUseContainers } from '@/lib/roles';
 
-/** Read the Cognito session for this request and mint a relay management token. */
-export async function mintManageToken(request: NextRequest): Promise<TerminalAuthResult> {
+export interface ManageAuth {
+  status: number;
+  token?: string;
+  error?: string;
+}
+
+/** Read the Cognito session and return its ID token (with a cheap Coder pre-check). */
+export async function getManageAuth(request: NextRequest): Promise<ManageAuth> {
   const response = NextResponse.next();
   const session = await runWithAmplifyServerContext({
     nextServerContext: { request, response },
     operation: (contextSpec) => fetchAuthSession(contextSpec),
   }).catch(() => null);
 
-  const payload = session?.tokens?.idToken?.payload as Record<string, unknown> | undefined;
-  const groups = (payload?.['cognito:groups'] as string[] | undefined) ?? [];
+  const idToken = session?.tokens?.idToken;
+  if (!idToken) return { status: 401, error: 'Unauthenticated' };
 
-  return authorizeManageRequest({
-    sub: payload?.sub as string | undefined,
-    email: payload?.email as string | undefined,
-    groups,
-    secret: process.env.TERMINAL_JWT_SECRET,
-  });
+  const groups = (idToken.payload?.['cognito:groups'] as string[] | undefined) ?? [];
+  if (!canUseContainers(groups)) return { status: 403, error: 'Coder access required' };
+
+  return { status: 200, token: idToken.toString() };
 }
