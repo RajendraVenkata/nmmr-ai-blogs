@@ -53,3 +53,19 @@ export function requestLabel(value: string): string {
 export function isCoderRequest(requestedRole: string | null | undefined): boolean {
   return requestedRole === 'CODER';
 }
+
+export interface RequestOption {
+  value: string;
+  label: string;
+}
+
+export function requestOptions(currentRole: Role, isCoder: boolean): RequestOption[] {
+  const options: RequestOption[] = requestableRoles(currentRole).map((r) => ({
+    value: r,
+    label: requestLabel(r),
+  }));
+  if (!isCoder) {
+    options.push({ value: 'CODER', label: requestLabel('CODER') });
+  }
+  return options;
+}

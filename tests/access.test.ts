@@ -8,6 +8,7 @@ import {
   restoreStatusForComment,
   requestLabel,
   isCoderRequest,
+  requestOptions,
 } from '@/lib/access';
 
 describe('requestableRoles', () => {
@@ -80,5 +81,29 @@ describe('isCoderRequest', () => {
     expect(isCoderRequest('CONTENT_WRITER')).toBe(false);
     expect(isCoderRequest(null)).toBe(false);
     expect(isCoderRequest(undefined)).toBe(false);
+  });
+});
+
+describe('requestOptions', () => {
+  it('offers roles and Coder to a non-coder reader', () => {
+    expect(requestOptions('READER', false)).toEqual([
+      { value: 'CONTENT_WRITER', label: 'Content Writer' },
+      { value: 'CONTENT_ADMIN', label: 'Content Admin' },
+      { value: 'CODER', label: 'Coder access' },
+    ]);
+  });
+  it('omits Coder when the user already has it', () => {
+    expect(requestOptions('READER', true)).toEqual([
+      { value: 'CONTENT_WRITER', label: 'Content Writer' },
+      { value: 'CONTENT_ADMIN', label: 'Content Admin' },
+    ]);
+  });
+  it('offers only Coder to a non-coder content admin', () => {
+    expect(requestOptions('CONTENT_ADMIN', false)).toEqual([
+      { value: 'CODER', label: 'Coder access' },
+    ]);
+  });
+  it('offers nothing to a content admin who is already a coder', () => {
+    expect(requestOptions('CONTENT_ADMIN', true)).toEqual([]);
   });
 });
