@@ -6,6 +6,7 @@ import { useCurrentUser } from '@/lib/useCurrentUser';
 import { client } from '@/lib/client';
 import AccessRequestForm from '@/components/AccessRequestForm';
 import MyRequests, { type RequestRow } from '@/components/MyRequests';
+import MyContainers from '@/components/MyContainers';
 import { pendingRequests } from '@/lib/access';
 
 export default function AccountPage() {
@@ -42,6 +43,7 @@ export default function AccountPage() {
       <p className="text-xs text-gray-400">Your user id: {user.userId}</p>
       <AccessRequestForm user={user} pendingRoles={pendingRoles} onSubmitted={loadRequests} />
       <MyRequests requests={requests} />
+      <MyContainers />
     </div>
   );
 }
