@@ -67,7 +67,7 @@ export default function TerminalEmbed({ labId }: { labId: LabId }) {
         }
         term.write(new Uint8Array(ev.data as ArrayBuffer));
       };
-      ws.onclose = () => { if (status !== 'error') setStatus('idle'); };
+      ws.onclose = () => setStatus((prev) => (prev === 'error' ? 'error' : 'idle'));
       ws.onerror = () => { setStatus('error'); setMessage('Connection failed'); };
 
       term.onData((d) => { if (ws.readyState === WebSocket.OPEN) ws.send(d); });
