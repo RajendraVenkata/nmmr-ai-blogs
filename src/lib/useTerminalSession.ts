@@ -18,11 +18,15 @@ export function useTerminalSession(labId: LabId) {
   const termRef = useRef<{ dispose: () => void } | null>(null);
   const fitRef = useRef<{ fit: () => void } | null>(null);
   const launchingRef = useRef(false);
+  const resizeObsRef = useRef<ResizeObserver | null>(null);
+  const resizeRafRef = useRef(0);
 
   useEffect(() => {
     return () => {
       wsRef.current?.close();
       termRef.current?.dispose();
+      resizeObsRef.current?.disconnect();
+      cancelAnimationFrame(resizeRafRef.current);
     };
   }, []);
 
@@ -51,6 +55,15 @@ export function useTerminalSession(labId: LabId) {
       fitAddon.fit();
       termRef.current = term;
       fitRef.current = fitAddon;
+
+      // Auto-refit xterm whenever its container changes size (manual resize, restore).
+      resizeObsRef.current?.disconnect();
+      const obs = new ResizeObserver(() => {
+        cancelAnimationFrame(resizeRafRef.current);
+        resizeRafRef.current = requestAnimationFrame(() => fitAddon.fit());
+      });
+      obs.observe(mountRef.current);
+      resizeObsRef.current = obs;
 
       const base = process.env.NEXT_PUBLIC_TERMINAL_WS_URL ?? 'ws://localhost:8080';
       const ws = new WebSocket(`${base}?token=${encodeURIComponent(token)}&labId=${encodeURIComponent(labId)}`);

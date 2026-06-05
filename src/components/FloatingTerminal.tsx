@@ -1,12 +1,17 @@
 'use client';
 
 import { useState } from 'react';
+import type { PointerEvent as ReactPointerEvent } from 'react';
 import { useTerminalSession } from '@/lib/useTerminalSession';
 import { TERMINAL_LABS, type LabId } from '@/lib/terminalEmbed';
+
+const MIN_W = 320;
+const MIN_H = 160;
 
 export default function FloatingTerminal({ labId }: { labId: LabId }) {
   const { loading, isCoder, status, message, mountRef, launch, refit } = useTerminalSession(labId);
   const [minimized, setMinimized] = useState(false);
+  const [size, setSize] = useState({ w: 480, h: 320 });
   const label = TERMINAL_LABS[labId];
 
   if (loading) return null;
@@ -14,6 +19,30 @@ export default function FloatingTerminal({ labId }: { labId: LabId }) {
   function restore() {
     setMinimized(false);
     requestAnimationFrame(() => requestAnimationFrame(() => refit()));
+  }
+
+  // Drag the top-left grip to resize; the panel is docked bottom-right, so dragging
+  // up/left enlarges it. xterm auto-refits via the hook's ResizeObserver.
+  function startResize(e: ReactPointerEvent) {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startW = size.w;
+    const startH = size.h;
+    const maxW = window.innerWidth - 32;
+    const maxH = window.innerHeight - 120;
+    const onMove = (ev: PointerEvent) => {
+      setSize({
+        w: Math.min(maxW, Math.max(MIN_W, startW + (startX - ev.clientX))),
+        h: Math.min(maxH, Math.max(MIN_H, startH + (startY - ev.clientY))),
+      });
+    };
+    const onUp = () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+    };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
   }
 
   return (
@@ -29,9 +58,17 @@ export default function FloatingTerminal({ labId }: { labId: LabId }) {
 
       {/* Panel stays mounted; hidden (not unmounted) when minimized so the session persists. */}
       <div
-        style={{ display: minimized ? 'none' : 'block' }}
-        className="fixed bottom-4 right-4 z-50 w-[480px] max-w-[calc(100vw-2rem)] rounded-lg border border-gray-700 bg-black shadow-2xl"
+        style={{ display: minimized ? 'none' : 'block', width: size.w }}
+        className="fixed bottom-4 right-4 z-50 max-w-[calc(100vw-2rem)] rounded-lg border border-gray-700 bg-black shadow-2xl"
       >
+        {/* Resize grip (top-left): drag to resize the corner-docked panel. */}
+        <div
+          onPointerDown={startResize}
+          aria-label="Resize terminal"
+          title="Drag to resize"
+          style={{ touchAction: 'none' }}
+          className="absolute left-0 top-0 z-10 h-4 w-4 cursor-nwse-resize rounded-tl-lg hover:bg-white/10"
+        />
         <div className="flex items-center justify-between border-b border-gray-700 px-3 py-2">
           <span className="text-xs font-medium text-gray-300">{label} terminal</span>
           <div className="flex items-center gap-2">
@@ -65,7 +102,7 @@ export default function FloatingTerminal({ labId }: { labId: LabId }) {
         ) : (
           <>
             {status === 'error' && <p className="px-3 pt-2 text-xs text-red-400">{message}</p>}
-            <div ref={mountRef} style={{ height: 320 }} className="p-2" />
+            <div ref={mountRef} style={{ height: size.h }} className="p-2" />
           </>
         )}
       </div>
