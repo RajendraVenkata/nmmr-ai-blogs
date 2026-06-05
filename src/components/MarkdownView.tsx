@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic';
 import { parseTerminalFence } from '@/lib/terminalEmbed';
 
 const TerminalEmbed = dynamic(() => import('@/components/TerminalEmbed'), { ssr: false });
+const FloatingTerminal = dynamic(() => import('@/components/FloatingTerminal'), { ssr: false });
 
 export default function MarkdownView({ markdown }: { markdown: string }) {
   return (
@@ -20,7 +21,11 @@ export default function MarkdownView({ markdown }: { markdown: string }) {
           code({ className, children, ...props }) {
             const lang = /language-(\w+)/.exec(className || '')?.[1];
             const parsed = parseTerminalFence(lang, String(children));
-            if (parsed) return <TerminalEmbed labId={parsed.labId} />;
+            if (parsed) {
+              return parsed.float
+                ? <FloatingTerminal labId={parsed.labId} />
+                : <TerminalEmbed labId={parsed.labId} />;
+            }
             return <code className={className} {...props}>{children}</code>;
           },
         }}
