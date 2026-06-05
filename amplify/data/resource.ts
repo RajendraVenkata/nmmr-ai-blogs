@@ -24,7 +24,7 @@ const schema = a.schema({
       excerpt: a.string(),
       coverImageKey: a.string(),
       tags: a.string().array(),
-      status: a.enum(['DRAFT', 'PUBLISHED', 'DELETED']),
+      status: a.enum(['DRAFT', 'PENDING_REVIEW', 'PUBLISHED', 'DELETED']),
       authorId: a.string().required(),
       authorName: a.string(),
       publishedAt: a.datetime(),
