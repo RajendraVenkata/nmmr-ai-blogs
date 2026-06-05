@@ -1,91 +1,17 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { useCurrentUser } from '@/lib/useCurrentUser';
-import { canUseContainers } from '@/lib/roles';
+import { useTerminalSession } from '@/lib/useTerminalSession';
 import { TERMINAL_LABS, type LabId } from '@/lib/terminalEmbed';
-import '@xterm/xterm/css/xterm.css';
-
-type Status = 'idle' | 'connecting' | 'connected' | 'error';
 
 export default function TerminalEmbed({ labId }: { labId: LabId }) {
-  const { user, loading } = useCurrentUser();
-  const [status, setStatus] = useState<Status>('idle');
-  const [message, setMessage] = useState('');
-  const mountRef = useRef<HTMLDivElement>(null);
-  const wsRef = useRef<WebSocket | null>(null);
-  const termRef = useRef<{ dispose: () => void } | null>(null);
-
-  useEffect(() => {
-    return () => {
-      wsRef.current?.close();
-      termRef.current?.dispose();
-    };
-  }, []);
-
-  async function launch() {
-    if (!mountRef.current) return;
-    setStatus('connecting');
-    setMessage('Connecting…');
-    try {
-      const { fetchAuthSession } = await import('aws-amplify/auth');
-      const session = await fetchAuthSession();
-      const token = session.tokens?.idToken?.toString();
-      if (!token) {
-        setStatus('error');
-        setMessage('Please sign in to launch a terminal.');
-        return;
-      }
-
-      const { Terminal } = await import('@xterm/xterm');
-      const { FitAddon } = await import('@xterm/addon-fit');
-      const term = new Terminal({ cursorBlink: true, fontSize: 13, convertEol: true });
-      const fit = new FitAddon();
-      term.loadAddon(fit);
-      mountRef.current.innerHTML = '';
-      term.open(mountRef.current);
-      fit.fit();
-      termRef.current = term;
-
-      const base = process.env.NEXT_PUBLIC_TERMINAL_WS_URL ?? 'ws://localhost:8080';
-      const ws = new WebSocket(`${base}?token=${encodeURIComponent(token)}&labId=${encodeURIComponent(labId)}`);
-      ws.binaryType = 'arraybuffer';
-      wsRef.current = ws;
-
-      ws.onmessage = (ev) => {
-        if (typeof ev.data === 'string') {
-          try {
-            const msg = JSON.parse(ev.data);
-            if (msg.type === 'ready') { setStatus('connected'); setMessage(''); }
-            else if (msg.type === 'error') { setStatus('error'); setMessage(msg.message ?? 'Error'); }
-            else if (msg.type === 'system') { term.writeln(`\r\n\x1b[33m${msg.message}\x1b[0m`); }
-            // activity_ack / pong: ignore
-            return;
-          } catch {
-            term.write(ev.data);
-            return;
-          }
-        }
-        term.write(new Uint8Array(ev.data as ArrayBuffer));
-      };
-      ws.onclose = () => setStatus((prev) => (prev === 'error' ? 'error' : 'idle'));
-      ws.onerror = () => { setStatus('error'); setMessage('Connection failed'); };
-
-      term.onData((d) => { if (ws.readyState === WebSocket.OPEN) ws.send(d); });
-      ws.onopen = () => { ws.send(JSON.stringify({ type: 'resize', cols: term.cols, rows: term.rows })); };
-    } catch (e) {
-      setStatus('error');
-      setMessage(e instanceof Error ? e.message : 'Failed to launch');
-    }
-  }
-
+  const { loading, isCoder, status, message, mountRef, launch } = useTerminalSession(labId);
   const label = TERMINAL_LABS[labId];
 
   if (loading) {
     return <div className="my-4 rounded border bg-gray-50 p-4 text-sm text-gray-500">Loading…</div>;
   }
 
-  if (!user || !canUseContainers(user.groups)) {
+  if (!isCoder) {
     return (
       <div className="my-4 rounded border bg-gray-50 p-4 text-sm">
         <p className="font-medium">{label} terminal</p>
