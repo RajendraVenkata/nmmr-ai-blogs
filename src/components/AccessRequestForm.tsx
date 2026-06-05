@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { client } from '@/lib/client';
-import { requestableRoles, type RequestableRole } from '@/lib/access';
+import { requestOptions } from '@/lib/access';
+import { canUseContainers } from '@/lib/roles';
 import type { CurrentUser } from '@/lib/useCurrentUser';
 
 export default function AccessRequestForm({
@@ -14,17 +15,17 @@ export default function AccessRequestForm({
   pendingRoles: string[];
   onSubmitted: () => void;
 }) {
-  const options = requestableRoles(user.role);
-  const [role, setRole] = useState<RequestableRole | ''>(options[0] ?? '');
+  const options = requestOptions(user.role, canUseContainers(user.groups));
+  const [value, setValue] = useState<string>(options[0]?.value ?? '');
   const [reason, setReason] = useState('');
   const [message, setMessage] = useState('');
 
   if (options.length === 0) return null;
 
   async function submit() {
-    if (!role) return;
-    if (pendingRoles.includes(role)) {
-      setMessage('You already have a pending request for that role.');
+    if (!value) return;
+    if (pendingRoles.includes(value)) {
+      setMessage('You already have a pending request for that access.');
       return;
     }
     setMessage('Submitting…');
@@ -32,7 +33,7 @@ export default function AccessRequestForm({
       await client.models.AccessRequest.create({
         userId: user.userId,
         userEmail: user.email,
-        requestedRole: role,
+        requestedRole: value as 'CONTENT_WRITER' | 'CONTENT_ADMIN' | 'CODER',
         reason,
         status: 'PENDING',
       });
@@ -49,11 +50,11 @@ export default function AccessRequestForm({
       <h2 className="font-semibold">Request access</h2>
       <select
         className="rounded border p-2"
-        value={role}
-        onChange={(e) => setRole(e.target.value as RequestableRole)}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
       >
-        {options.map((r) => (
-          <option key={r} value={r}>{r}</option>
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>{o.label}</option>
         ))}
       </select>
       <textarea
