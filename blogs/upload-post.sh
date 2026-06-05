@@ -34,6 +34,7 @@ AUTHOR_NAME="${AUTHOR_NAME:-Rajendra Venkata}"
 AUTHOR_ID="${AUTHOR_ID:-rajendra.venkata@gmail.com}"
 SITE_URL="${SITE_URL:-https://www.rajendravenkata.com}"
 POST_ID="${POST_ID:-}"
+STATUS="${STATUS:-PENDING_REVIEW}"
 COVER_OVERRIDE=""
 MD_FILE=""
 DISCOVER=0
@@ -55,6 +56,8 @@ while [[ $# -gt 0 ]]; do
     --author-name)    AUTHOR_NAME="$2"; shift 2 ;;
     --author-id)      AUTHOR_ID="$2"; shift 2 ;;
     --id)             POST_ID="$2"; shift 2 ;;
+    --status)         STATUS="$2"; shift 2 ;;
+    --publish)        STATUS="PUBLISHED"; shift ;;
     --site-url)       SITE_URL="$2"; shift 2 ;;
     --discover)       DISCOVER=1; shift ;;
     -y|--yes)         ASSUME_YES=1; shift ;;
@@ -99,7 +102,7 @@ ITEM_JSON="$(mktemp "${TMPDIR:-/tmp}/post-item.XXXXXX")"
 trap 'rm -f "$ITEM_JSON"' EXIT
 
 eval "$(POST_ID="$POST_ID" AUTHOR_NAME="$AUTHOR_NAME" AUTHOR_ID="$AUTHOR_ID" \
-        MD_DIR="$MD_DIR" COVER_OVERRIDE="$COVER_OVERRIDE" \
+        MD_DIR="$MD_DIR" COVER_OVERRIDE="$COVER_OVERRIDE" STATUS="$STATUS" \
         python3 - "$MD_FILE" "$ITEM_JSON" <<'PY'
 import sys, os, re, json, uuid, datetime
 
@@ -144,16 +147,16 @@ cover_key = f"media/{cover_name}" if cover_name else ""
 post_id = os.environ.get("POST_ID") or str(uuid.uuid4())
 now = datetime.datetime.now(datetime.timezone.utc)
 iso = now.strftime("%Y-%m-%dT%H:%M:%S.") + f"{now.microsecond // 1000:03d}Z"
+status = os.environ.get("STATUS", "PENDING_REVIEW")
 
 item = {
     "id":           {"S": post_id},
     "slug":         {"S": slug},
     "title":        {"S": title},
     "bodyMarkdown": {"S": body},
-    "status":       {"S": "PUBLISHED"},
+    "status":       {"S": status},
     "authorId":     {"S": os.environ["AUTHOR_ID"]},
     "authorName":   {"S": os.environ["AUTHOR_NAME"]},
-    "publishedAt":  {"S": iso},
     "createdAt":    {"S": iso},
     "updatedAt":    {"S": iso},
     "__typename":   {"S": "Post"},
@@ -164,6 +167,8 @@ if cover_key:
     item["coverImageKey"] = {"S": cover_key}
 if tags:
     item["tags"] = {"L": [{"S": str(t)} for t in tags]}
+if status == "PUBLISHED":
+    item["publishedAt"] = {"S": iso}
 
 with open(out_path, "w", encoding="utf-8") as f:
     json.dump(item, f, ensure_ascii=False)
@@ -176,6 +181,7 @@ print(f"TITLE={sh(title)}")
 print(f"POST_ID={sh(post_id)}")
 print(f"COVER_FILE={sh(cover_file)}")
 print(f"COVER_KEY={sh(cover_key)}")
+print(f"STATUS={sh(status)}")
 PY
 )"
 
@@ -183,6 +189,7 @@ PY
 echo "About to publish:"
 echo "  Title:      $TITLE"
 echo "  Slug:       $SLUG"
+echo "  Status:     $STATUS"
 echo "  Post ID:    $POST_ID"
 echo "  Cover:      ${COVER_FILE:-<none>}  ->  s3://$BUCKET/${COVER_KEY:-<none>}"
 echo "  Table:      $TABLE  (region $REGION)"
