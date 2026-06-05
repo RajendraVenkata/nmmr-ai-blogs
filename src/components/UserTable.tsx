@@ -8,6 +8,7 @@ interface ProfileRow {
   id: string;
   email?: string | null;
   role?: string | null;
+  isCoder?: boolean | null;
 }
 
 export default function UserTable() {
@@ -41,12 +42,28 @@ export default function UserTable() {
     }
   }
 
+  async function toggleCoder(id: string, enabled: boolean) {
+    setBusy(id);
+    try {
+      await client.mutations.setCoderAccess({ userId: id, enabled });
+      try {
+        await client.models.UserProfile.update({ id, isCoder: enabled });
+      } catch {
+        // ignore — Cognito group change is authoritative
+      }
+      await load();
+    } finally {
+      setBusy('');
+    }
+  }
+
   return (
     <table className="w-full text-sm">
       <thead>
         <tr className="border-b text-left text-gray-500">
           <th className="py-2">User</th>
           <th className="py-2">Role</th>
+          <th className="py-2">Coder</th>
         </tr>
       </thead>
       <tbody>
@@ -65,11 +82,19 @@ export default function UserTable() {
                 ))}
               </select>
             </td>
+            <td className="py-2">
+              <input
+                type="checkbox"
+                disabled={busy === u.id}
+                checked={!!u.isCoder}
+                onChange={(e) => toggleCoder(u.id, e.target.checked)}
+              />
+            </td>
           </tr>
         ))}
         {rows.length === 0 && (
           <tr>
-            <td colSpan={2} className="py-3 text-gray-500">No users yet.</td>
+            <td colSpan={3} className="py-3 text-gray-500">No users yet.</td>
           </tr>
         )}
       </tbody>
