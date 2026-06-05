@@ -36,6 +36,8 @@ function EditPostInner() {
         title: data.title,
         excerpt: data.excerpt ?? '',
         bodyMarkdown: data.bodyMarkdown,
+        // Note: a PENDING_REVIEW post opened here is intentionally coerced to DRAFT
+        // (the studio has no review state); saving pulls it out of the approval queue.
         status: data.status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
         coverImageKey: data.coverImageKey ?? null,
         tags: (data.tags ?? []).filter((t): t is string => !!t),

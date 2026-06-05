@@ -16,6 +16,8 @@
 #       --author-name NAME  Author display name         (env AUTHOR_NAME)
 #       --author-id ID      Author id                   (env AUTHOR_ID)
 #       --id POST_ID        Reuse to UPDATE an existing post (default: new uuid)
+#       --status STATUS     Post status (default: PENDING_REVIEW; env STATUS)
+#       --publish           Shorthand for --status PUBLISHED (skip the review queue)
 #       --site-url URL      Base URL for the printed link (env SITE_URL)
 #       --discover          Auto-discover TABLE and BUCKET in the region
 #   -y, --yes               Skip the confirmation prompt (env FORCE=1)
@@ -228,6 +230,12 @@ echo "Writing post record to $TABLE"
 aws dynamodb put-item --region "$REGION" --table-name "$TABLE" --item "file://$ITEM_JSON"
 
 echo
-echo "Done. Published: $SITE_URL/posts/$SLUG"
-echo "If the page 404s briefly, it's CDN/cache — give it a moment."
-echo "Tip: refresh the LinkedIn preview at https://www.linkedin.com/post-inspector/"
+if [[ "$STATUS" == "PUBLISHED" ]]; then
+  echo "Done. Published: $SITE_URL/posts/$SLUG"
+  echo "If the page 404s briefly, it's CDN/cache — give it a moment."
+  echo "Tip: refresh the LinkedIn preview at https://www.linkedin.com/post-inspector/"
+else
+  echo "Done. Submitted for review ($STATUS)."
+  echo "It stays hidden from the site until an admin approves it at /admin/posts."
+  echo "Preview URL (live only after approval): $SITE_URL/posts/$SLUG"
+fi

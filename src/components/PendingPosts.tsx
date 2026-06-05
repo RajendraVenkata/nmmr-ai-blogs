@@ -21,6 +21,7 @@ export default function PendingPosts() {
 
   async function load() {
     const { data } = await client.models.Post.list({ filter: { status: { eq: 'PENDING_REVIEW' } } });
+    // belt-and-suspenders: the API filter above is the primary guard
     setRows(pendingReview(data as PendingRow[]));
   }
 
