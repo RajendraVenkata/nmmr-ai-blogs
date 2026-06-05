@@ -18,12 +18,17 @@ function isLabId(value: string): value is LabId {
 
 /**
  * Decide whether a fenced code block is a terminal embed.
- * Returns the lab to launch, or null to render the block as ordinary code.
+ * Returns the lab to launch and whether it should float, or null for ordinary code.
  */
-export function parseTerminalFence(lang: string | undefined, source: string): { labId: LabId } | null {
+export function parseTerminalFence(
+  lang: string | undefined,
+  source: string,
+): { labId: LabId; float: boolean } | null {
   if (lang !== 'terminal') return null;
   const match = /^\s*lab:\s*(\S+)\s*$/m.exec(source);
   if (!match) return null;
   const labId = match[1];
-  return isLabId(labId) ? { labId } : null;
+  if (!isLabId(labId)) return null;
+  const float = /^\s*float:\s*true\s*$/m.test(source);
+  return { labId, float };
 }

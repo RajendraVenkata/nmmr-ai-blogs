@@ -3,10 +3,10 @@ import { parseTerminalFence, TERMINAL_LABS } from '@/lib/terminalEmbed';
 
 describe('parseTerminalFence', () => {
   it('parses a terminal fence with a valid lab', () => {
-    expect(parseTerminalFence('terminal', 'lab: python-basics')).toEqual({ labId: 'python-basics' });
+    expect(parseTerminalFence('terminal', 'lab: python-basics')).toEqual({ labId: 'python-basics', float: false });
   });
   it('tolerates extra whitespace and lines', () => {
-    expect(parseTerminalFence('terminal', '  lab:   node-basics  \n')).toEqual({ labId: 'node-basics' });
+    expect(parseTerminalFence('terminal', '  lab:   node-basics  \n')).toEqual({ labId: 'node-basics', float: false });
   });
   it('returns null for a non-terminal language', () => {
     expect(parseTerminalFence('python', 'lab: python-basics')).toBeNull();
@@ -24,7 +24,7 @@ describe('parseTerminalFence', () => {
 
 describe('networked labs', () => {
   it('parses a networked lab fence', () => {
-    expect(parseTerminalFence('terminal', 'lab: python-net')).toEqual({ labId: 'python-net' });
+    expect(parseTerminalFence('terminal', 'lab: python-net')).toEqual({ labId: 'python-net', float: false });
   });
   it('labels networked labs', () => {
     expect(TERMINAL_LABS['python-net']).toBe('Python (networked)');
@@ -32,6 +32,18 @@ describe('networked labs', () => {
     expect(TERMINAL_LABS['linux-net']).toBe('Linux (networked)');
   });
   it('still parses the offline labs', () => {
-    expect(parseTerminalFence('terminal', 'lab: python-basics')).toEqual({ labId: 'python-basics' });
+    expect(parseTerminalFence('terminal', 'lab: python-basics')).toEqual({ labId: 'python-basics', float: false });
+  });
+});
+
+describe('float flag', () => {
+  it('parses float: true', () => {
+    expect(parseTerminalFence('terminal', 'lab: python-net\nfloat: true')).toEqual({ labId: 'python-net', float: true });
+  });
+  it('defaults float to false when absent', () => {
+    expect(parseTerminalFence('terminal', 'lab: python-net')?.float).toBe(false);
+  });
+  it('ignores float on a non-terminal fence', () => {
+    expect(parseTerminalFence('python', 'lab: python-net\nfloat: true')).toBeNull();
   });
 });
