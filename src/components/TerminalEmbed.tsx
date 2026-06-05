@@ -14,9 +14,13 @@ export default function TerminalEmbed({ labId }: { labId: LabId }) {
   const [message, setMessage] = useState('');
   const mountRef = useRef<HTMLDivElement>(null);
   const wsRef = useRef<WebSocket | null>(null);
+  const termRef = useRef<{ dispose: () => void } | null>(null);
 
   useEffect(() => {
-    return () => wsRef.current?.close();
+    return () => {
+      wsRef.current?.close();
+      termRef.current?.dispose();
+    };
   }, []);
 
   async function launch() {
@@ -45,6 +49,7 @@ export default function TerminalEmbed({ labId }: { labId: LabId }) {
       mountRef.current.innerHTML = '';
       term.open(mountRef.current);
       fit.fit();
+      termRef.current = term;
 
       const base = process.env.NEXT_PUBLIC_TERMINAL_WS_URL ?? 'ws://localhost:8080';
       const ws = new WebSocket(`${base}?token=${encodeURIComponent(token)}&labId=${encodeURIComponent(labId)}`);

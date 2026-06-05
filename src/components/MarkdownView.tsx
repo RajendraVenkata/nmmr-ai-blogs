@@ -5,8 +5,10 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import { markdownSanitizeSchema } from '@/lib/sanitize';
+import dynamic from 'next/dynamic';
 import { parseTerminalFence } from '@/lib/terminalEmbed';
-import TerminalEmbed from '@/components/TerminalEmbed';
+
+const TerminalEmbed = dynamic(() => import('@/components/TerminalEmbed'), { ssr: false });
 
 export default function MarkdownView({ markdown }: { markdown: string }) {
   return (
