@@ -39,3 +39,17 @@ export function restoreStatusForPost(): 'DRAFT' {
 export function restoreStatusForComment(): 'ACTIVE' {
   return 'ACTIVE';
 }
+
+const REQUEST_LABELS: Record<string, string> = {
+  CODER: 'Coder access',
+  CONTENT_WRITER: 'Content Writer',
+  CONTENT_ADMIN: 'Content Admin',
+};
+
+export function requestLabel(value: string): string {
+  return REQUEST_LABELS[value] ?? value;
+}
+
+export function isCoderRequest(requestedRole: string | null | undefined): boolean {
+  return requestedRole === 'CODER';
+}

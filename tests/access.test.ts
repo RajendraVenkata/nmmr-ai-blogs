@@ -6,6 +6,8 @@ import {
   deletedItems,
   restoreStatusForPost,
   restoreStatusForComment,
+  requestLabel,
+  isCoderRequest,
 } from '@/lib/access';
 
 describe('requestableRoles', () => {
@@ -56,5 +58,27 @@ describe('restore targets', () => {
   it('post restores to DRAFT, comment to ACTIVE', () => {
     expect(restoreStatusForPost()).toBe('DRAFT');
     expect(restoreStatusForComment()).toBe('ACTIVE');
+  });
+});
+
+describe('requestLabel', () => {
+  it('labels CODER as Coder access', () => {
+    expect(requestLabel('CODER')).toBe('Coder access');
+  });
+  it('labels roles in friendly form', () => {
+    expect(requestLabel('CONTENT_WRITER')).toBe('Content Writer');
+    expect(requestLabel('CONTENT_ADMIN')).toBe('Content Admin');
+  });
+  it('passes unknown values through', () => {
+    expect(requestLabel('SOMETHING')).toBe('SOMETHING');
+  });
+});
+
+describe('isCoderRequest', () => {
+  it('is true only for CODER', () => {
+    expect(isCoderRequest('CODER')).toBe(true);
+    expect(isCoderRequest('CONTENT_WRITER')).toBe(false);
+    expect(isCoderRequest(null)).toBe(false);
+    expect(isCoderRequest(undefined)).toBe(false);
   });
 });
