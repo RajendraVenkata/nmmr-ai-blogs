@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="AI">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#4338ca"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <!-- figurative AI: a faint neural-node constellation -->
+  <g stroke="#ffffff" stroke-opacity="0.22" stroke-width="3" fill="none">
+    <path d="M113 123 L399 102 M399 102 L430 266 M113 123 L92 338 M430 266 L256 430 M92 338 L256 430"/>
+  </g>
+  <g fill="#ffffff" fill-opacity="0.47">
+    <circle cx="113" cy="123" r="11"/>
+    <circle cx="399" cy="102" r="11"/>
+    <circle cx="430" cy="266" r="11"/>
+    <circle cx="92" cy="338" r="11"/>
+    <circle cx="256" cy="430" r="11"/>
+  </g>
+  <text x="256" y="262" text-anchor="middle" dominant-baseline="central"
+        font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="256"
+        fill="#ffffff">AI</text>
+</svg>
