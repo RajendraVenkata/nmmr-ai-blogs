@@ -8,6 +8,7 @@ export default function AdminNav() {
       <Link href="/admin/requests" className="text-primary">Requests</Link>
       <Link href="/admin/users" className="text-primary">Users</Link>
       <Link href="/admin/moderation" className="text-primary">Moderation</Link>
+      <Link href="/admin/containers" className="text-primary">Containers</Link>
     </nav>
   );
 }
