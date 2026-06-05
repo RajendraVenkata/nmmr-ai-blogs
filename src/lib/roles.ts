@@ -42,3 +42,9 @@ export function canEditPost(
   if (role === 'CONTENT_WRITER') return post.authorId === userId;
   return false;
 }
+
+export const CODER_GROUP = 'Coder';
+
+export function canUseContainers(groups: string[]): boolean {
+  return groups.includes(CODER_GROUP);
+}

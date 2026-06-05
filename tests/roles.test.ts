@@ -5,6 +5,7 @@ import {
   canModerate,
   canGrantRoles,
   canEditPost,
+  canUseContainers,
 } from '@/lib/roles';
 
 describe('roleFromGroups', () => {
@@ -43,5 +44,16 @@ describe('canEditPost', () => {
   });
   it('readers edit nothing', () => {
     expect(canEditPost('READER', 'u1', post)).toBe(false);
+  });
+});
+
+describe('canUseContainers', () => {
+  it('is true when the Coder group is present', () => {
+    expect(canUseContainers(['Coder'])).toBe(true);
+    expect(canUseContainers(['ContentWriter', 'Coder'])).toBe(true);
+  });
+  it('is false without the Coder group', () => {
+    expect(canUseContainers([])).toBe(false);
+    expect(canUseContainers(['SystemAdmin'])).toBe(false);
   });
 });
