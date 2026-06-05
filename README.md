@@ -75,3 +75,9 @@ The browser calls the blog's `/api/containers` and `/api/containers/stop` routes
 verify the Cognito session + `Coder` group, mint a token, and proxy server-to-server to
 the relay's `GET /api/containers` / `POST /api/containers/stop` over `TERMINAL_HTTP_URL`
 (e.g. `https://terminal.nmmr.tech`; `http://localhost:8080` locally).
+
+Networked lab variants (`python-net`, `node-net`, `linux-net`) give the terminal internet
+access so `pip install` / `npm install` / `apt-get` work; the plain `*-basics` labs stay
+offline. Networked containers run on a firewalled `nmmr-net` Docker network (internet
+allowed, host LAN blocked) — see `nmmr-terminal/commands.md` and
+`scripts/setup-nmmr-net.sh`.
