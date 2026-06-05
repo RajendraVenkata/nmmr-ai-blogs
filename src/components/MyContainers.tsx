@@ -48,8 +48,13 @@ export default function MyContainers() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ containerId: id }),
       });
-      if (!res.ok) setMessage('Could not stop the container.');
-      await load();
+      if (res.ok) {
+        await load();
+      } else {
+        setMessage('Could not stop the container.');
+      }
+    } catch {
+      setMessage('Could not stop the container.');
     } finally {
       setBusy('');
     }
