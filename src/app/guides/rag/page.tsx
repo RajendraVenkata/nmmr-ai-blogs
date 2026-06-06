@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useCurrentUser } from '@/lib/useCurrentUser';
 import { canUseContainers } from '@/lib/roles';
@@ -9,6 +9,22 @@ interface Source {
   source?: string | null;
   page?: number | null;
   score?: number;
+}
+
+interface DocItem {
+  source: string;
+  kind: 'url' | 'pdf';
+  chunks: number;
+  pages: number | null;
+}
+
+interface JobView {
+  id: string;
+  kind: string;
+  source: string;
+  status: 'processing' | 'done' | 'error';
+  chunks?: number | null;
+  error?: string | null;
 }
 
 async function postJson(path: string, body: unknown) {
@@ -22,18 +38,72 @@ async function postJson(path: string, body: unknown) {
   return data;
 }
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export default function RagAppPage() {
   const { user, loading } = useCurrentUser();
+  const isCoder = !!user && canUseContainers(user.groups);
+
+  const [models, setModels] = useState<string[]>([]);
+  const [model, setModel] = useState('');
+  const [docs, setDocs] = useState<DocItem[]>([]);
+  const [jobs, setJobs] = useState<JobView[]>([]);
 
   const [url, setUrl] = useState('');
-  const [ingestMsg, setIngestMsg] = useState<string | null>(null);
-  const [ingesting, setIngesting] = useState(false);
-
   const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState<string | null>(null);
+  const [answer, setAnswer] = useState<{ text: string; model?: string } | null>(null);
   const [sources, setSources] = useState<Source[]>([]);
   const [asking, setAsking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const refreshDocs = useCallback(async () => {
+    try {
+      const res = await fetch('/api/rag/documents', { cache: 'no-store' });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) setDocs(Array.isArray(data.documents) ? data.documents : []);
+    } catch {
+      /* non-fatal */
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isCoder) return;
+    (async () => {
+      try {
+        const res = await fetch('/api/rag/models', { cache: 'no-store' });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && Array.isArray(data.models)) {
+          setModels(data.models);
+          setModel((m) => m || data.models[0] || '');
+        }
+      } catch {
+        /* non-fatal */
+      }
+      refreshDocs();
+    })();
+  }, [isCoder, refreshDocs]);
+
+  // Poll a single ingestion job until it finishes; refresh the doc list on success.
+  const pollJob = useCallback(
+    async (id: string) => {
+      for (let i = 0; i < 200; i++) {
+        await sleep(1500);
+        try {
+          const res = await fetch(`/api/rag/jobs/${id}`, { cache: 'no-store' });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) continue;
+          setJobs((prev) => prev.map((j) => (j.id === id ? { ...j, ...data } : j)));
+          if (data.status && data.status !== 'processing') {
+            if (data.status === 'done') refreshDocs();
+            return;
+          }
+        } catch {
+          /* keep polling */
+        }
+      }
+    },
+    [refreshDocs],
+  );
 
   if (loading) return <p className="py-8">Loading…</p>;
   if (!user) {
@@ -43,29 +113,24 @@ export default function RagAppPage() {
       </p>
     );
   }
-  if (!canUseContainers(user.groups)) {
+  if (!isCoder) {
     return <p className="py-8">You need Coder access to use this app.</p>;
   }
 
   async function ingestUrl() {
     if (!url.trim()) return;
-    setIngesting(true);
-    setIngestMsg(null);
     setError(null);
     try {
       const data = await postJson('/api/rag/ingest/url', { url: url.trim() });
-      setIngestMsg(`Ingested ${data.chunks} chunks from ${data.source}`);
+      setJobs((prev) => [{ id: data.id, kind: 'url', source: data.source, status: data.status }, ...prev]);
       setUrl('');
+      pollJob(data.id);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to ingest URL');
-    } finally {
-      setIngesting(false);
+      setError(e instanceof Error ? e.message : 'Failed to start URL ingest');
     }
   }
 
   async function ingestPdf(file: File) {
-    setIngesting(true);
-    setIngestMsg(null);
     setError(null);
     try {
       const form = new FormData();
@@ -73,11 +138,10 @@ export default function RagAppPage() {
       const res = await fetch('/api/rag/ingest/pdf', { method: 'POST', body: form });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || data.detail || `Upload failed (${res.status})`);
-      setIngestMsg(`Ingested ${data.chunks} chunks from ${data.source}`);
+      setJobs((prev) => [{ id: data.id, kind: 'pdf', source: data.source, status: data.status }, ...prev]);
+      pollJob(data.id);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to ingest PDF');
-    } finally {
-      setIngesting(false);
+      setError(e instanceof Error ? e.message : 'Failed to start PDF ingest');
     }
   }
 
@@ -88,8 +152,8 @@ export default function RagAppPage() {
     setAnswer(null);
     setSources([]);
     try {
-      const data = await postJson('/api/rag/chat', { question: question.trim(), k: 4 });
-      setAnswer(data.answer ?? '');
+      const data = await postJson('/api/rag/chat', { question: question.trim(), k: 4, model });
+      setAnswer({ text: data.answer ?? '', model: data.model });
       setSources(Array.isArray(data.sources) ? data.sources : []);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Chat failed');
@@ -103,6 +167,12 @@ export default function RagAppPage() {
   const btnClass =
     'rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primaryDark disabled:opacity-50';
 
+  const statusColor: Record<JobView['status'], string> = {
+    processing: 'text-amber-600',
+    done: 'text-green-700',
+    error: 'text-red-600',
+  };
+
   return (
     <div className="space-y-8">
       <header className="space-y-2">
@@ -112,6 +182,7 @@ export default function RagAppPage() {
         <h1 className="text-3xl font-bold text-gray-900">Simple RAG application</h1>
         <p className="text-gray-600">
           Add documents to the knowledge base, then ask questions answered from that content.
+          Uploads run in the background, so you can keep working and ask questions right away.
         </p>
       </header>
 
@@ -129,11 +200,14 @@ export default function RagAppPage() {
             <input
               value={url}
               onChange={(e) => setUrl(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') ingestUrl();
+              }}
               placeholder="https://example.com/article"
               className={inputClass}
             />
-            <button onClick={ingestUrl} disabled={ingesting || !url.trim()} className={`${btnClass} shrink-0`}>
-              {ingesting ? 'Working…' : 'Ingest URL'}
+            <button onClick={ingestUrl} disabled={!url.trim()} className={`${btnClass} shrink-0`}>
+              Ingest URL
             </button>
           </div>
         </div>
@@ -143,7 +217,6 @@ export default function RagAppPage() {
           <input
             type="file"
             accept="application/pdf"
-            disabled={ingesting}
             onChange={(e) => {
               const f = e.target.files?.[0];
               if (f) ingestPdf(f);
@@ -153,12 +226,73 @@ export default function RagAppPage() {
           />
         </div>
 
-        {ingestMsg && <p className="text-sm text-green-700">{ingestMsg}</p>}
+        {jobs.length > 0 && (
+          <ul className="space-y-1 border-t border-gray-100 pt-3 text-sm">
+            {jobs.map((j) => (
+              <li key={j.id} className="flex items-center justify-between gap-3">
+                <span className="truncate text-gray-700">
+                  <span className="text-gray-400">[{j.kind}]</span> {j.source}
+                </span>
+                <span className={`shrink-0 font-medium ${statusColor[j.status]}`}>
+                  {j.status === 'processing' && 'Processing…'}
+                  {j.status === 'done' && `Done · ${j.chunks} chunks`}
+                  {j.status === 'error' && `Error: ${j.error ?? 'failed'}`}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {/* Documents in context */}
+      <section className="space-y-3 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-900">Documents in context</h2>
+          <button onClick={refreshDocs} className="text-sm text-primary hover:underline">
+            Refresh
+          </button>
+        </div>
+        {docs.length === 0 ? (
+          <p className="text-sm text-gray-500">No documents yet. Add a URL or PDF above.</p>
+        ) : (
+          <ul className="divide-y divide-gray-100 text-sm">
+            {docs.map((d) => (
+              <li key={d.source} className="flex items-center justify-between gap-3 py-2">
+                <span className="truncate text-gray-800">
+                  <span className="mr-2 rounded bg-gray-100 px-1.5 py-0.5 text-xs uppercase text-gray-500">
+                    {d.kind}
+                  </span>
+                  {d.source}
+                </span>
+                <span className="shrink-0 text-gray-500">
+                  {d.chunks} chunks{d.pages ? ` · ${d.pages} pages` : ''}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {/* Chat */}
       <section className="space-y-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">2. Ask a question</h2>
+
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <label className="text-sm font-medium text-gray-700 sm:shrink-0">Model</label>
+          <select
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            className={`${inputClass} sm:max-w-xs`}
+          >
+            {models.length === 0 && <option value="">Loading models…</option>}
+            {models.map((m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="flex flex-col gap-2 sm:flex-row">
           <input
             value={question}
@@ -176,7 +310,10 @@ export default function RagAppPage() {
 
         {answer !== null && (
           <div className="space-y-3">
-            <div className="whitespace-pre-wrap rounded-lg bg-gray-50 p-4 text-sm text-gray-800">{answer}</div>
+            <div className="whitespace-pre-wrap rounded-lg bg-gray-50 p-4 text-sm text-gray-800">{answer.text}</div>
+            <div className="flex flex-wrap items-center gap-x-4 text-xs text-gray-500">
+              {answer.model && <span>Model: {answer.model}</span>}
+            </div>
             {sources.length > 0 && (
               <div className="text-xs text-gray-500">
                 <p className="font-medium text-gray-600">Sources</p>

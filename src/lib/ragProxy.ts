@@ -11,6 +11,20 @@ function ragAuthHeader(): Record<string, string> {
   return key ? { Authorization: `Bearer ${key}` } : {};
 }
 
+/** Server-to-server GET (no caching) to the rag-backends API. */
+export async function getFromRag(path: string): Promise<RagResponse> {
+  try {
+    const res = await fetch(`${RAG_BASE}${path}`, {
+      headers: ragAuthHeader(),
+      cache: 'no-store',
+    });
+    const body = await res.json().catch(() => ({}));
+    return { status: res.status, body };
+  } catch {
+    return { status: 502, body: { error: 'Could not reach the RAG service' } };
+  }
+}
+
 /** Server-to-server JSON call to the rag-backends API. */
 export async function proxyToRag(
   path: string,
