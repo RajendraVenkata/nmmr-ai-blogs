@@ -9,6 +9,7 @@ interface Source {
   source?: string | null;
   page?: number | null;
   score?: number;
+  content?: string;
 }
 
 interface DocItem {
@@ -46,6 +47,7 @@ export default function RagAppPage() {
 
   const [models, setModels] = useState<string[]>([]);
   const [model, setModel] = useState('');
+  const [k, setK] = useState(4);
   const [docs, setDocs] = useState<DocItem[]>([]);
   const [jobs, setJobs] = useState<JobView[]>([]);
 
@@ -152,7 +154,7 @@ export default function RagAppPage() {
     setAnswer(null);
     setSources([]);
     try {
-      const data = await postJson('/api/rag/chat', { question: question.trim(), k: 4, model });
+      const data = await postJson('/api/rag/chat', { question: question.trim(), k, model });
       setAnswer({ text: data.answer ?? '', model: data.model });
       setSources(Array.isArray(data.sources) ? data.sources : []);
     } catch (e) {
@@ -277,20 +279,38 @@ export default function RagAppPage() {
       <section className="space-y-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">2. Ask a question</h2>
 
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="text-sm font-medium text-gray-700 sm:shrink-0">Model</label>
-          <select
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-            className={`${inputClass} sm:max-w-xs`}
-          >
-            {models.length === 0 && <option value="">Loading models…</option>}
-            {models.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
-            ))}
-          </select>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex flex-1 items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 sm:shrink-0">Model</label>
+            <select
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              className={`${inputClass} sm:max-w-xs`}
+            >
+              {models.length === 0 && <option value="">Loading models…</option>}
+              {models.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700 sm:shrink-0" title="Number of chunks retrieved from the vector store">
+              Top-k
+            </label>
+            <input
+              type="number"
+              min={1}
+              max={20}
+              value={k}
+              onChange={(e) => {
+                const n = Number(e.target.value);
+                setK(Number.isFinite(n) ? Math.min(20, Math.max(1, Math.round(n))) : 4);
+              }}
+              className={`${inputClass} w-20`}
+            />
+          </div>
         </div>
 
         <div className="flex flex-col gap-2 sm:flex-row">
@@ -315,17 +335,33 @@ export default function RagAppPage() {
               {answer.model && <span>Model: {answer.model}</span>}
             </div>
             {sources.length > 0 && (
-              <div className="text-xs text-gray-500">
-                <p className="font-medium text-gray-600">Sources</p>
-                <ul className="mt-1 space-y-1">
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-600">
+                  Retrieved chunks (top {sources.length})
+                </p>
+                <ol className="space-y-2">
                   {sources.map((s, i) => (
-                    <li key={i} className="truncate">
-                      {s.source}
-                      {s.page != null ? ` (p.${s.page})` : ''}
-                      {typeof s.score === 'number' ? ` · score ${s.score.toFixed(3)}` : ''}
+                    <li key={i} className="rounded-lg border border-gray-200 bg-white p-3">
+                      <div className="flex items-start justify-between gap-3 text-xs text-gray-500">
+                        <span className="truncate">
+                          <span className="mr-1 font-semibold text-gray-700">#{i + 1}</span>
+                          {s.source}
+                          {s.page != null ? ` (p.${s.page})` : ''}
+                        </span>
+                        {typeof s.score === 'number' && (
+                          <span className="shrink-0" title="Distance — lower is more similar">
+                            score {s.score.toFixed(3)}
+                          </span>
+                        )}
+                      </div>
+                      {s.content && (
+                        <p className="mt-2 max-h-40 overflow-y-auto whitespace-pre-wrap text-xs text-gray-700">
+                          {s.content}
+                        </p>
+                      )}
                     </li>
                   ))}
-                </ul>
+                </ol>
               </div>
             )}
           </div>
