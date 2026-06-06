@@ -105,3 +105,10 @@ server-side and its CORS config is irrelevant to this path.
 |----------|----------|---------|-------------|
 | `RAG_API_URL` | No (defaults to `http://localhost:8000`) | `https://rag.rajendravenkata.com` | Base URL of the `rag-backends` service the proxy routes call. Use the tunnel host in Amplify; localhost for local dev. |
 | `RAG_API_KEY` | No | `<shared secret>` | Sent as `Authorization: Bearer <key>` to the backend. Set only if `rag-backends` has `RAG_API_KEY` enabled; the two values must match. |
+
+On Amplify, set these under **App settings → Environment variables** and **redeploy**
+(env changes only apply on a new build). Amplify exposes console env vars to the build
+but not always to the Next.js SSR runtime, so `next.config.mjs` inlines `RAG_API_URL` /
+`RAG_API_KEY` at build time for the `/api/rag/*` route handlers. If `RAG_API_URL` is unset,
+the proxy falls back to `http://localhost:8000` (local dev) — which on Amplify produces a
+502 "Could not reach the RAG service".
