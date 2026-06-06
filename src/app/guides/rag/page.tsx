@@ -22,10 +22,28 @@ interface DocItem {
 interface JobView {
   id: string;
   kind: string;
-  source: string;
+  label: string;
   status: 'processing' | 'done' | 'error';
-  chunks?: number | null;
+  result?: { chunks?: number; source?: string } | null;
   error?: string | null;
+}
+
+interface ChatResult {
+  answer?: string;
+  provider?: string;
+  model?: string;
+  sources?: Source[];
+}
+
+interface ModelOption {
+  provider: string;
+  model: string;
+}
+
+interface RagConfig {
+  embedding: { provider: string; model: string };
+  has_openai_key: boolean;
+  embedding_options: { ollama: string[]; openai: string[] };
 }
 
 async function postJson(path: string, body: unknown) {
@@ -45,15 +63,25 @@ export default function RagAppPage() {
   const { user, loading } = useCurrentUser();
   const isCoder = !!user && canUseContainers(user.groups);
 
-  const [models, setModels] = useState<string[]>([]);
-  const [model, setModel] = useState('');
+  const [models, setModels] = useState<ModelOption[]>([]);
+  const [modelIdx, setModelIdx] = useState(0);
   const [k, setK] = useState(4);
   const [docs, setDocs] = useState<DocItem[]>([]);
   const [jobs, setJobs] = useState<JobView[]>([]);
 
+  // Settings (embeddings + OpenAI key)
+  const [config, setConfig] = useState<RagConfig | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [embProvider, setEmbProvider] = useState('ollama');
+  const [embModel, setEmbModel] = useState('');
+  const [apiKey, setApiKey] = useState('');
+  const [savingCfg, setSavingCfg] = useState(false);
+  const [cfgMsg, setCfgMsg] = useState<string | null>(null);
+  const [clearing, setClearing] = useState(false);
+
   const [url, setUrl] = useState('');
   const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState<{ text: string; model?: string } | null>(null);
+  const [answer, setAnswer] = useState<{ text: string; provider?: string; model?: string } | null>(null);
   const [sources, setSources] = useState<Source[]>([]);
   const [asking, setAsking] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -68,43 +96,58 @@ export default function RagAppPage() {
     }
   }, []);
 
+  const loadModels = useCallback(async () => {
+    try {
+      const res = await fetch('/api/rag/models', { cache: 'no-store' });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && Array.isArray(data.models)) {
+        setModels(data.models);
+        setModelIdx(0);
+      }
+    } catch {
+      /* non-fatal */
+    }
+  }, []);
+
+  const loadConfig = useCallback(async () => {
+    try {
+      const res = await fetch('/api/rag/config', { cache: 'no-store' });
+      const data = (await res.json().catch(() => ({}))) as RagConfig;
+      if (res.ok && data.embedding) {
+        setConfig(data);
+        setEmbProvider(data.embedding.provider);
+        setEmbModel(data.embedding.model);
+      }
+    } catch {
+      /* non-fatal */
+    }
+  }, []);
+
   useEffect(() => {
     if (!isCoder) return;
-    (async () => {
-      try {
-        const res = await fetch('/api/rag/models', { cache: 'no-store' });
-        const data = await res.json().catch(() => ({}));
-        if (res.ok && Array.isArray(data.models)) {
-          setModels(data.models);
-          setModel((m) => m || data.models[0] || '');
-        }
-      } catch {
-        /* non-fatal */
-      }
-      refreshDocs();
-    })();
-  }, [isCoder, refreshDocs]);
+    loadConfig();
+    loadModels();
+    refreshDocs();
+  }, [isCoder, loadConfig, loadModels, refreshDocs]);
 
-  // Poll a single ingestion job until it finishes; refresh the doc list on success.
-  const pollJob = useCallback(
-    async (id: string) => {
-      for (let i = 0; i < 200; i++) {
-        await sleep(1500);
+  // Poll a job until it finishes. Each poll is a short request, so an upstream
+  // gateway never times out (504) on a slow Ollama/OpenAI call. Returns the final job.
+  const waitForJob = useCallback(
+    async (id: string, intervalMs = 1200, maxTries = 250): Promise<JobView> => {
+      for (let i = 0; i < maxTries; i++) {
+        await sleep(intervalMs);
         try {
           const res = await fetch(`/api/rag/jobs/${id}`, { cache: 'no-store' });
           const data = await res.json().catch(() => ({}));
           if (!res.ok) continue;
-          setJobs((prev) => prev.map((j) => (j.id === id ? { ...j, ...data } : j)));
-          if (data.status && data.status !== 'processing') {
-            if (data.status === 'done') refreshDocs();
-            return;
-          }
+          if (data.status && data.status !== 'processing') return data as JobView;
         } catch {
           /* keep polling */
         }
       }
+      throw new Error('Timed out waiting for the result');
     },
-    [refreshDocs],
+    [],
   );
 
   if (loading) return <p className="py-8">Loading…</p>;
@@ -119,14 +162,80 @@ export default function RagAppPage() {
     return <p className="py-8">You need Coder access to use this app.</p>;
   }
 
+  const embOptions = config?.embedding_options?.[embProvider as 'ollama' | 'openai'] ?? [];
+
+  async function saveConfig() {
+    setSavingCfg(true);
+    setError(null);
+    setCfgMsg(null);
+    try {
+      const body: Record<string, string> = {
+        embedding_provider: embProvider,
+        embedding_model: embModel,
+      };
+      if (apiKey.trim()) body.openai_api_key = apiKey.trim();
+      const embedChanged =
+        config &&
+        (config.embedding.provider !== embProvider || config.embedding.model !== embModel);
+      const data = (await postJson('/api/rag/config', body)) as RagConfig;
+      setConfig(data);
+      setApiKey('');
+      await Promise.all([loadModels(), refreshDocs()]);
+      if (embedChanged) {
+        setJobs([]);
+        setAnswer(null);
+        setSources([]);
+        setCfgMsg('Embedding model changed — the knowledge base was cleared. Re-ingest your documents.');
+      } else {
+        setCfgMsg('Settings saved.');
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to save settings');
+    } finally {
+      setSavingCfg(false);
+    }
+  }
+
+  async function clearStore() {
+    if (!window.confirm('Clear the entire knowledge base? All ingested URLs and PDFs will be removed.')) {
+      return;
+    }
+    setClearing(true);
+    setError(null);
+    try {
+      await postJson('/api/rag/clear', {});
+      setJobs([]);
+      setAnswer(null);
+      setSources([]);
+      await refreshDocs();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to clear');
+    } finally {
+      setClearing(false);
+    }
+  }
+
+  // Track an ingest job in the list, then poll it to completion.
+  async function trackIngest(job: JobView) {
+    setJobs((prev) => [job, ...prev]);
+    try {
+      const done = await waitForJob(job.id);
+      setJobs((prev) => prev.map((j) => (j.id === job.id ? { ...j, ...done } : j)));
+      if (done.status === 'done') refreshDocs();
+    } catch {
+      setJobs((prev) =>
+        prev.map((j) => (j.id === job.id ? { ...j, status: 'error', error: 'Timed out' } : j)),
+      );
+    }
+  }
+
   async function ingestUrl() {
     if (!url.trim()) return;
     setError(null);
     try {
       const data = await postJson('/api/rag/ingest/url', { url: url.trim() });
-      setJobs((prev) => [{ id: data.id, kind: 'url', source: data.source, status: data.status }, ...prev]);
       setUrl('');
-      pollJob(data.id);
+      trackIngest({ id: data.id, kind: 'url', label: data.label, status: 'processing' });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to start URL ingest');
     }
@@ -140,8 +249,7 @@ export default function RagAppPage() {
       const res = await fetch('/api/rag/ingest/pdf', { method: 'POST', body: form });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || data.detail || `Upload failed (${res.status})`);
-      setJobs((prev) => [{ id: data.id, kind: 'pdf', source: data.source, status: data.status }, ...prev]);
-      pollJob(data.id);
+      trackIngest({ id: data.id, kind: 'pdf', label: data.label, status: 'processing' });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to start PDF ingest');
     }
@@ -149,14 +257,27 @@ export default function RagAppPage() {
 
   async function ask() {
     if (!question.trim()) return;
+    const sel = models[modelIdx];
+    if (!sel) {
+      setError('No chat model available — check Settings / Ollama.');
+      return;
+    }
     setAsking(true);
     setError(null);
     setAnswer(null);
     setSources([]);
     try {
-      const data = await postJson('/api/rag/chat', { question: question.trim(), k, model });
-      setAnswer({ text: data.answer ?? '', model: data.model });
-      setSources(Array.isArray(data.sources) ? data.sources : []);
+      const job = await postJson('/api/rag/chat', {
+        question: question.trim(),
+        k,
+        provider: sel.provider,
+        model: sel.model,
+      });
+      const done = await waitForJob(job.id, 1000, 300);
+      if (done.status === 'error') throw new Error(done.error || 'Chat failed');
+      const result = (done.result ?? {}) as ChatResult;
+      setAnswer({ text: result.answer ?? '', provider: result.provider, model: result.model });
+      setSources(Array.isArray(result.sources) ? result.sources : []);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Chat failed');
     } finally {
@@ -191,6 +312,81 @@ export default function RagAppPage() {
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
       )}
+
+      {/* Settings */}
+      <section className="rounded-xl border border-gray-200 bg-white shadow-sm">
+        <button
+          onClick={() => setSettingsOpen((o) => !o)}
+          className="flex w-full items-center justify-between p-6 text-left"
+        >
+          <span className="text-lg font-semibold text-gray-900">Settings — embeddings &amp; API key</span>
+          <span className="text-sm text-gray-500">
+            {config ? `${config.embedding.provider} · ${config.embedding.model}` : '…'} {settingsOpen ? '▲' : '▼'}
+          </span>
+        </button>
+        {settingsOpen && (
+          <div className="space-y-4 border-t border-gray-100 p-6">
+            <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
+              Changing the embedding provider/model rebuilds the vector store, so the current
+              knowledge base is <strong>cleared</strong> and must be re-ingested.
+            </p>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700">Embedding provider</label>
+                <select
+                  value={embProvider}
+                  onChange={(e) => {
+                    const p = e.target.value;
+                    setEmbProvider(p);
+                    const opts = config?.embedding_options?.[p as 'ollama' | 'openai'] ?? [];
+                    setEmbModel(opts[0] ?? '');
+                  }}
+                  className={inputClass}
+                >
+                  <option value="ollama">Ollama (local)</option>
+                  <option value="openai">OpenAI</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700">Embedding model</label>
+                <select value={embModel} onChange={(e) => setEmbModel(e.target.value)} className={inputClass}>
+                  {embOptions.length === 0 && <option value="">No models</option>}
+                  {embOptions.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="block text-sm font-medium text-gray-700">
+                OpenAI API key{' '}
+                <span className="font-normal text-gray-400">
+                  ({config?.has_openai_key ? 'set — leave blank to keep' : 'not set'}; used for OpenAI embeddings and chat)
+                </span>
+              </label>
+              <input
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="sk-…"
+                autoComplete="off"
+                className={inputClass}
+              />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button onClick={saveConfig} disabled={savingCfg} className={btnClass}>
+                {savingCfg ? 'Saving…' : 'Save settings'}
+              </button>
+              {cfgMsg && <span className="text-sm text-green-700">{cfgMsg}</span>}
+            </div>
+          </div>
+        )}
+      </section>
 
       {/* Ingest */}
       <section className="space-y-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -233,11 +429,11 @@ export default function RagAppPage() {
             {jobs.map((j) => (
               <li key={j.id} className="flex items-center justify-between gap-3">
                 <span className="truncate text-gray-700">
-                  <span className="text-gray-400">[{j.kind}]</span> {j.source}
+                  <span className="text-gray-400">[{j.kind}]</span> {j.label}
                 </span>
                 <span className={`shrink-0 font-medium ${statusColor[j.status]}`}>
                   {j.status === 'processing' && 'Processing…'}
-                  {j.status === 'done' && `Done · ${j.chunks} chunks`}
+                  {j.status === 'done' && `Done · ${j.result?.chunks ?? 0} chunks`}
                   {j.status === 'error' && `Error: ${j.error ?? 'failed'}`}
                 </span>
               </li>
@@ -249,10 +445,29 @@ export default function RagAppPage() {
       {/* Documents in context */}
       <section className="space-y-3 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Documents in context</h2>
-          <button onClick={refreshDocs} className="text-sm text-primary hover:underline">
-            Refresh
-          </button>
+          <div className="flex items-center gap-3">
+            <h2 className="text-lg font-semibold text-gray-900">Documents in context</h2>
+            {config && (
+              <span
+                className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600"
+                title="Embedding model the stored vectors were built with. Changing it (in Settings) clears the store."
+              >
+                embeddings: {config.embedding.provider} · {config.embedding.model}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-4">
+            <button onClick={refreshDocs} className="text-sm text-primary hover:underline">
+              Refresh
+            </button>
+            <button
+              onClick={clearStore}
+              disabled={clearing || docs.length === 0}
+              className="text-sm font-medium text-red-600 hover:underline disabled:opacity-40"
+            >
+              {clearing ? 'Clearing…' : 'Clear all'}
+            </button>
+          </div>
         </div>
         {docs.length === 0 ? (
           <p className="text-sm text-gray-500">No documents yet. Add a URL or PDF above.</p>
@@ -283,14 +498,14 @@ export default function RagAppPage() {
           <div className="flex flex-1 items-center gap-2">
             <label className="text-sm font-medium text-gray-700 sm:shrink-0">Model</label>
             <select
-              value={model}
-              onChange={(e) => setModel(e.target.value)}
+              value={modelIdx}
+              onChange={(e) => setModelIdx(Number(e.target.value))}
               className={`${inputClass} sm:max-w-xs`}
             >
-              {models.length === 0 && <option value="">Loading models…</option>}
-              {models.map((m) => (
-                <option key={m} value={m}>
-                  {m}
+              {models.length === 0 && <option value={0}>No models available</option>}
+              {models.map((m, i) => (
+                <option key={`${m.provider}:${m.model}`} value={i}>
+                  {m.provider} · {m.model}
                 </option>
               ))}
             </select>
@@ -332,7 +547,7 @@ export default function RagAppPage() {
           <div className="space-y-3">
             <div className="whitespace-pre-wrap rounded-lg bg-gray-50 p-4 text-sm text-gray-800">{answer.text}</div>
             <div className="flex flex-wrap items-center gap-x-4 text-xs text-gray-500">
-              {answer.model && <span>Model: {answer.model}</span>}
+              {answer.model && <span>Model: {answer.provider} · {answer.model}</span>}
             </div>
             {sources.length > 0 && (
               <div className="space-y-2">
