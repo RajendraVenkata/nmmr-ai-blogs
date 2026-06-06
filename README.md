@@ -83,3 +83,25 @@ access so `pip install` / `npm install` / `apt-get` work; the plain `*-basics` l
 offline. Networked containers run on a firewalled `nmmr-net` Docker network (internet
 allowed, host LAN blocked) — see `nmmr-terminal/commands.md` and
 `scripts/setup-nmmr-net.sh`.
+
+## Simple RAG application
+
+The home page "Practical guides" card links to `/guides`. Coders see a **Simple RAG
+application** card there (others see "more guides coming soon"); it opens `/guides/rag`,
+a small UI to ingest URLs/PDFs into a vector store and chat with that content. It is
+backed by the `rag-backends` service (FastAPI + Chroma + a remote Ollama host), exposed
+through the same Cloudflare tunnel as the relay (e.g. `https://rag.rajendravenkata.com`).
+
+Only users in the `Coder` Cognito group can use it. The page is gated client-side, and —
+the real enforcement — the browser calls the blog's own `/api/rag/chat`,
+`/api/rag/ingest/url`, and `/api/rag/ingest/pdf` routes, which verify the Cognito session
++ `Coder` group (`getManageAuth`, 403 otherwise) and proxy **server-to-server** to the
+backend. The browser never calls the backend directly, so the backend's URL and key stay
+server-side and its CORS config is irrelevant to this path.
+
+### Environment variables (server-side, not `NEXT_PUBLIC_`)
+
+| Variable | Required | Example | Description |
+|----------|----------|---------|-------------|
+| `RAG_API_URL` | No (defaults to `http://localhost:8000`) | `https://rag.rajendravenkata.com` | Base URL of the `rag-backends` service the proxy routes call. Use the tunnel host in Amplify; localhost for local dev. |
+| `RAG_API_KEY` | No | `<shared secret>` | Sent as `Authorization: Bearer <key>` to the backend. Set only if `rag-backends` has `RAG_API_KEY` enabled; the two values must match. |
